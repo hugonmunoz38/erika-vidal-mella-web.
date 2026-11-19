@@ -65,6 +65,49 @@
        text-shadow: 0 calc(2 * var(--u)) calc(4 * var(--u)) rgba(0,0,0,.5); white-space: nowrap; }
   #buy .key { width: calc(44 * var(--u)); height: calc(44 * var(--u)); border-radius: 50%; background: #fff; color: #141414; display: flex; align-items: center; justify-content: center;
        font-size: calc(26 * var(--u)); box-shadow: 0 0 calc(10 * var(--u)) rgba(255,255,255,.8); text-shadow: none; }
+
+  /* ---------- menú de tienda (probador) ---------- */
+  #shop { position: absolute; display: none; width: calc(470 * var(--u)); font-family: 'Inter', sans-serif; color: #fff; }
+  #shop .banner { height: calc(124 * var(--u)); position: relative; overflow: hidden;
+       background: repeating-linear-gradient(-45deg, #ffd21a 0 calc(18 * var(--u)), #111 calc(18 * var(--u)) calc(36 * var(--u))); }
+  #shop .banner::after { content: ''; position: absolute; inset: calc(10 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)); background: linear-gradient(120deg, #0b0b0b, #1d1d1d); }
+  #shop .banner img { position: absolute; z-index: 1; left: calc(32 * var(--u)); top: 50%; height: calc(78 * var(--u)); transform: translateY(-50%); filter: invert(1) drop-shadow(0 0 calc(8 * var(--u)) rgba(255,210,26,.45)); }
+  #shop .banner span { position: absolute; z-index: 1; right: calc(28 * var(--u)); top: 50%; transform: translateY(-50%); text-align: right;
+       font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(19 * var(--u)); letter-spacing: calc(3 * var(--u)); color: #ffd21a; line-height: 1.25; }
+  #shop .sub { display: flex; justify-content: space-between; background: #000; padding: calc(10 * var(--u)) calc(16 * var(--u));
+       font-weight: 700; font-size: calc(21 * var(--u)); letter-spacing: calc(.5 * var(--u)); text-transform: uppercase; }
+  #shop .row { display: flex; align-items: center; height: calc(54 * var(--u)); padding: 0 calc(16 * var(--u)); background: rgba(0,0,0,.66);
+       font-weight: 500; font-size: calc(21 * var(--u)); gap: calc(10 * var(--u)); }
+  #shop .row .n { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #shop .row .p { font-weight: 600; }
+  #shop .row .ic { width: calc(26 * var(--u)); height: calc(26 * var(--u)); opacity: 0; }
+  #shop .row.on { background: #f2f2f2; color: #111; }
+  #shop .row.eq .ic { opacity: 1; }
+  #shop .row.total { background: rgba(0,0,0,.82); font-weight: 700; border-top: calc(2 * var(--u)) solid rgba(255,255,255,.18); }
+  #shop .row.total.on { background: #ffd21a; color: #111; }
+  #shop .desc { margin-top: calc(6 * var(--u)); background: rgba(0,0,0,.66); padding: calc(12 * var(--u)) calc(16 * var(--u)); font-size: calc(19 * var(--u)); line-height: 1.35; color: rgba(255,255,255,.92); }
+  #seam { position: absolute; top: 0; bottom: 0; width: 80px; display: none; background: linear-gradient(90deg, rgba(18,12,8,0), rgba(18,12,8,.55) 50%, rgba(18,12,8,0)); }
+  #moneyPop { position: absolute; display: none; font-size: calc(48 * var(--u)); }
+  #moneyPop.t::after { background: linear-gradient(180deg, #ffd0d0 0%, #ff5a5a 45%, #d10f2a 100%); -webkit-background-clip: text; background-clip: text; }
+  #moneyPop.t { color: #3a0008; -webkit-text-stroke-color: #3a0008; }
+  #keys { position: absolute; display: none; gap: calc(16 * var(--u)); font-family: 'Inter', sans-serif; font-weight: 600; font-size: calc(20 * var(--u)); color: #fff; }
+  #keys div { display: flex; align-items: center; gap: calc(8 * var(--u)); background: rgba(0,0,0,.6); padding: calc(6 * var(--u)) calc(12 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u)); border-radius: calc(6 * var(--u)); }
+  #keys b { display: inline-flex; align-items: center; justify-content: center; min-width: calc(30 * var(--u)); height: calc(30 * var(--u)); padding: 0 calc(6 * var(--u)); box-sizing: border-box;
+       background: #fff; color: #111; border-radius: calc(5 * var(--u)); font-size: calc(17 * var(--u)); }
+
+  /* ---------- tarjeta final ---------- */
+  #final { position: absolute; inset: 0; display: none; }
+  #final .band { position: absolute; left: 0; right: 0; transform: translateY(-50%); height: calc(380 * var(--u));
+       background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.62) 22%, rgba(0,0,0,.62) 78%, rgba(0,0,0,0)); }
+  #final .box { position: absolute; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 100%; }
+  #final h1 { margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: calc(112 * var(--u)); line-height: 1; letter-spacing: calc(2 * var(--u)); position: relative; display: inline-block;
+       color: #2a1800; -webkit-text-stroke: calc(10 * var(--u)) #1a0f00; filter: drop-shadow(calc(3 * var(--u)) calc(5 * var(--u)) 0 rgba(0,0,0,.6)); }
+  #final h1::after { content: attr(data-t); position: absolute; left: 0; top: 0; -webkit-text-stroke: 0;
+       background: linear-gradient(180deg, #fff6b8 0%, #ffd93a 42%, #f2a900 70%, #b97700 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #final .s1 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(40 * var(--u)); letter-spacing: calc(10 * var(--u)); color: #fff; margin-top: calc(14 * var(--u));
+       text-shadow: 0 calc(3 * var(--u)) calc(6 * var(--u)) rgba(0,0,0,.6); padding-left: calc(10 * var(--u)); }
+  #final .s2 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(34 * var(--u)); letter-spacing: calc(2 * var(--u)); color: #ffd93a; margin-top: calc(26 * var(--u));
+       text-shadow: 0 calc(3 * var(--u)) calc(6 * var(--u)) rgba(0,0,0,.7); }
 </style>
 </head>
 <body>
@@ -146,6 +189,22 @@
       <g transform="translate(0 92)"><circle r="11" fill="#2fd16f" stroke="#fff" stroke-width="2.5"/><path d="M-6 1 L0 -5 L6 1 L6 6 L-6 6 Z" fill="#fff"/></g>
     </svg>
   </div>
+
+  <div id="shop">
+    <div class="banner"><img src="../assets/marca/beta_logo_negro.png" alt=""><span>STREETWEAR<br>&amp; SNOW</span></div>
+    <div class="sub"><span>Outfit HUF Sector</span><span id="cnt">1/4</span></div>
+    <div id="rows"></div>
+    <div class="row total" id="total"><span class="n">Comprar todo</span><span class="p">$154.960</span></div>
+    <div class="desc" id="desc"></div>
+  </div>
+  <div id="seam"></div>
+  <div id="moneyPop" class="t" data-t="-$154.960">-$154.960</div>
+  <div id="keys"><div><b>E</b>Comprar</div><div><b>Q</b>Girar</div><div><b>ESC</b>Salir</div></div>
+
+  <div id="final">
+    <div class="band"></div>
+    <div class="box"><h1 data-t="OUTFIT COMPLETADO">OUTFIT COMPLETADO</h1><div class="s1">ESTILO +</div><div class="s2">BETASNOW.CL · @BETASNOWCL</div></div>
+  </div>
 </div>
 
 <script>
@@ -156,9 +215,19 @@ const P = new URLSearchParams(location.search);
 const FMT = P.get('fmt') || '4x5';
 const W = 1080, U = W / 1170;
 const L = {
-  '4x5':  { h: 1350, hudTop: 4,   hudRight: 13, map: [120, 1300, 80], wheel: [585, 770, 185, 405], tabsY: 295, buyY: 1265 },
-  '9x16': { h: 1920, hudTop: 165, hudRight: 30, map: [140, 1560, 84], wheel: [585, 1020, 185, 405], tabsY: 540, buyY: 1500 },
+  '4x5':  { h: 1350, hudTop: 4,   hudRight: 13, map: [120, 1300, 80], wheel: [585, 770, 185, 405], tabsY: 295, buyY: 1265,
+            shop: [26, 150], shopScale: 1, seam: true, keysBottom: 1430, finalY: 700 },
+  '9x16': { h: 1920, hudTop: 165, hudRight: 30, map: [140, 1560, 84], wheel: [585, 1020, 185, 405], tabsY: 540, buyY: 1500,
+            shop: [30, 300], shopScale: 0.8, seam: false, keysBottom: 1640, finalY: 980 },
 }[FMT];
+
+// Outfit que se prueba el personaje (productos reales de betasnow.cl)
+const OUTFIT = [
+  { name: 'Jockey HUF Sector',          price: '$47.990', desc: 'Jockey 6 paneles con bordado biohazard. Talla única.' },
+  { name: 'Polera HUF Sector S/S',       price: '$36.990', desc: 'Polera negra, logo cromado al frente y biohazard en la espalda.' },
+  { name: 'Short HUF FC Easy',           price: '$49.990', desc: 'Short de nylon con estampado tono sobre tono.' },
+  { name: 'Calcetines HUF x Spitfire',   price: '$19.990', desc: 'Calcetines espiral HUF x Spitfire.' },
+];
 const H = L.h;
 
 // Accesorios reales de betasnow.cl (sentido horario desde arriba)
@@ -222,6 +291,21 @@ const tabs = $('#tabs'); tabs.style.left = cx + 'px'; tabs.style.top = (L.tabsY 
 const center = $('#center'); center.style.left = cx + 'px'; center.style.top = cy + 'px';
 const buy = $('#buy'); buy.style.left = cx + 'px'; buy.style.top = (L.buyY * U) + 'px';
 
+// Probador
+const shop = $('#shop'); shop.style.left = (L.shop[0] * U) + 'px'; shop.style.top = (L.shop[1] * U) + 'px';
+shop.style.transformOrigin = '0 0'; shop.style.transform = `scale(${L.shopScale})`;
+const seam = $('#seam'); seam.style.left = (W - Math.round(1350 * 9 / 16) - 40) + 'px';
+const shirt = '<svg class="ic" viewBox="0 0 24 24"><path d="M8 3 L4 5.5 L2 10 L5.5 11.5 L6 21 L18 21 L18.5 11.5 L22 10 L20 5.5 L16 3 C15 4.8 13.7 5.6 12 5.6 C10.3 5.6 9 4.8 8 3 Z" fill="currentColor"/></svg>';
+const rows = OUTFIT.map(o => {
+  const r = document.createElement('div'); r.className = 'row';
+  r.innerHTML = `<span class="n">${o.name}</span><span class="p">${o.price}</span>${shirt}`;
+  $('#rows').appendChild(r); return r;
+});
+const keys = $('#keys'); keys.style.right = (36 * U) + 'px'; keys.style.top = (L.keysBottom * U) + 'px';
+const fin = $('#final');
+fin.querySelector('.band').style.top = (L.finalY * U) + 'px'; fin.querySelector('.box').style.top = (L.finalY * U) + 'px';
+const fmtMoney = v => '$' + String(Math.round(v)).padStart(8, '0');
+
 // ----------------------------------------------------------------------------
 //  Estado (lo llama el script de render en cada cuadro)
 //   mode: 'hud' | 'rueda'   bg: ruta de imagen de fondo
@@ -252,6 +336,50 @@ window.setState = async (s) => {
   $('#iname').textContent = it.name; $('#icat').textContent = it.cat;
   const pr = $('#iprice'); pr.style.display = s.price ? 'inline-block' : 'none'; pr.textContent = it.price; pr.dataset.t = it.price;
   buy.style.display = s.buy ? 'flex' : 'none'; $('#buytxt').textContent = 'COMPRAR EN BETASNOW.CL';
+
+  // --- probador: menú de tienda + compra ---
+  const prob = s.mode === 'probador';
+  shop.style.display = prob ? 'block' : 'none';
+  keys.style.display = prob ? 'flex' : 'none';
+  seam.style.display = (prob && L.seam) ? 'block' : 'none';
+  map.style.display = (prob || s.mode === 'final') ? 'none' : 'block';
+  if (prob) {
+    const c = s.cursor ?? 0;                    // 0..3 prendas, 4 = "comprar todo"
+    rows.forEach((r, i) => { r.classList.toggle('on', i === c); r.classList.toggle('eq', i < (s.equipped ?? 0)); });
+    $('#total').classList.toggle('on', c === 4);
+    $('#cnt').textContent = `${Math.min(c + 1, 4)}/4`;
+    $('#desc').textContent = c < 4 ? OUTFIT[c].desc : 'Disponible en tienda y en betasnow.cl';
+    shop.style.opacity = s.menu ?? 1;
+    keys.style.opacity = s.menu ?? 1;
+  }
+  const money = $('#money'), mtxt = fmtMoney(s.money ?? 9999900);
+  money.textContent = mtxt; money.dataset.t = mtxt;
+  const mp = $('#moneyPop');
+  if ((s.moneyPop ?? 0) > 0) {
+    const r = money.getBoundingClientRect();
+    mp.style.display = 'block'; mp.style.opacity = s.moneyPop;
+    mp.style.top = (r.bottom + 2 * U) + 'px'; mp.style.left = 'auto';
+    mp.style.right = (W - r.right) + 'px';
+    $('#vitals').style.visibility = 'hidden'; $('#stars').style.visibility = 'hidden';
+  } else { mp.style.display = 'none'; $('#vitals').style.visibility = 'visible'; $('#stars').style.visibility = 'visible'; }
+
+  // --- tarjeta final ---
+  const f = s.mode === 'final';
+  fin.style.display = f ? 'block' : 'none';
+  if (f) {
+    if (s.bg) {
+      if (bg.getAttribute('src') !== s.bg) { bg.src = s.bg; await bg.decode(); }
+      bg.style.display = 'block';
+      const k = Math.min(1, (s.t ?? 1) / .35);
+      bg.style.filter = `blur(${(5 * k * U).toFixed(2)}px) brightness(${1 - .25 * k})`;
+      bg.style.transform = `scale(${1.0 + .03 * k})`;
+    }
+    const k1 = ease(Math.min(1, Math.max(0, (s.t ?? 1) / .45)));
+    const k2 = ease(Math.min(1, Math.max(0, ((s.t ?? 1) - .35) / .4)));
+    fin.querySelector('.band').style.opacity = k1;
+    const h1 = fin.querySelector('h1'); h1.style.opacity = k1; h1.style.transform = `scale(${1.25 - .25 * k1})`;
+    fin.querySelector('.s1').style.opacity = k2; fin.querySelector('.s2').style.opacity = k2;
+  } else if (!rueda) { bg.style.transform = 'scale(1.06)'; }
   await document.fonts.ready;
   return true;
 };
