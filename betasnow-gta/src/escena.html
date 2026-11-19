@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Beta Snow HUD</title>
+<style>
+  @font-face { font-family: 'HudPixel'; src: url('../assets/fonts/jersey10.woff2') format('woff2'); }
+  @font-face { font-family: 'Anton'; src: url('../assets/fonts/anton.woff2') format('woff2'); }
+  @font-face { font-family: 'Oswald'; font-weight: 600; src: url('../assets/fonts/oswald600.woff2') format('woff2'); }
+
+  :root { --u: 1px; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+  #stage { position: relative; overflow: hidden; background: transparent; }
+
+  /* ---------- fondo desenfocado (rueda) ---------- */
+  #bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; transform: scale(1.06); }
+  #haze { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,240,225,.10), rgba(255,236,220,.22)); opacity: 0; }
+
+  /* ---------- HUD superior derecho ---------- */
+  #hud { position: absolute; display: flex; align-items: flex-start; gap: calc(14 * var(--u)); }
+  #stats { display: flex; flex-direction: column; align-items: flex-end; }
+  .t { position: relative; font-family: 'HudPixel', monospace; line-height: .92; letter-spacing: calc(1.5 * var(--u)); white-space: nowrap;
+       color: #05302c; -webkit-text-stroke: calc(7 * var(--u)) #05302c;
+       filter: drop-shadow(calc(2 * var(--u)) calc(3 * var(--u)) 0 rgba(0,0,0,.5)); }
+  .t::after { content: attr(data-t); position: absolute; left: 0; top: 0; -webkit-text-stroke: 0;
+       background: linear-gradient(180deg, #e6fffa 0%, #7ff6dd 36%, #32dcbc 60%, #14a88d 100%);
+       -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #clock { font-size: calc(58 * var(--u)); }
+  #money { font-size: calc(54 * var(--u)); margin-top: calc(1 * var(--u)); }
+  #vitals { display: flex; align-items: center; gap: calc(6 * var(--u)); margin-top: calc(1 * var(--u)); }
+  #vitals .t { font-size: calc(54 * var(--u)); }
+  .heart { width: calc(40 * var(--u)); height: calc(36 * var(--u)); filter: drop-shadow(0 0 calc(3 * var(--u)) rgba(255,60,190,.7)) drop-shadow(calc(2 * var(--u)) calc(2 * var(--u)) 0 rgba(0,0,0,.45)); }
+  #stars { display: flex; gap: calc(2 * var(--u)); margin-top: calc(4 * var(--u)); margin-right: calc(-6 * var(--u)); }
+  .star { width: calc(36 * var(--u)); height: calc(36 * var(--u)); filter: drop-shadow(0 0 calc(2 * var(--u)) rgba(150,170,255,.8)); }
+  #weapon { width: calc(104 * var(--u)); height: calc(104 * var(--u)); border-radius: calc(20 * var(--u)); box-sizing: border-box;
+       border: calc(5 * var(--u)) solid #fff; background: linear-gradient(160deg, rgba(255,255,255,.80), rgba(255,236,248,.62));
+       box-shadow: 0 0 0 calc(3 * var(--u)) #f5a3dc, 0 0 calc(10 * var(--u)) rgba(255,140,220,.8), calc(3 * var(--u)) calc(4 * var(--u)) 0 rgba(0,0,0,.35);
+       display: flex; align-items: center; justify-content: center; }
+  #weapon svg { width: 92%; height: 92%; }
+
+  /* ---------- minimapa ---------- */
+  #map { position: absolute; }
+  #map svg { width: 100%; height: 100%; overflow: visible; }
+
+  /* ---------- rueda ---------- */
+  #wheel { position: absolute; inset: 0; opacity: 0; transform-origin: 50% 50%; }
+  #wheel svg.ring { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+  .seg { fill: rgba(255,255,255,.12); stroke: rgba(255,255,255,.50); stroke-width: calc(2.4 * var(--u)); }
+  .seg.sel { fill: rgba(255,255,255,.20); stroke: #fff; stroke-width: calc(5 * var(--u)); filter: url(#glow); }
+  .prod { position: absolute; display: flex; align-items: center; justify-content: center; transform: translate(-50%, -50%); }
+  .prod img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 calc(6 * var(--u)) calc(8 * var(--u)) rgba(0,0,0,.35)); }
+  #tabs { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: calc(4 * var(--u));
+       padding: calc(3 * var(--u)); border-radius: 999px; background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 calc(1.5 * var(--u)) rgba(255,255,255,.35); }
+  .tab { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(25 * var(--u)); letter-spacing: calc(.6 * var(--u)); text-transform: uppercase;
+       padding: calc(2 * var(--u)) calc(30 * var(--u)); border-radius: 999px; color: rgba(255,255,255,.62); line-height: 1.25; }
+  .tab.on { background: #fff; color: #141414; box-shadow: 0 0 calc(14 * var(--u)) rgba(255,255,255,.85); }
+  #center { position: absolute; transform: translate(-50%, -50%); text-align: center; width: calc(340 * var(--u)); }
+  #iname { font-family: 'Anton', sans-serif; font-size: calc(44 * var(--u)); line-height: 1.02; color: #fff; text-transform: uppercase;
+       letter-spacing: calc(.8 * var(--u)); text-shadow: 0 0 calc(10 * var(--u)) rgba(255,255,255,.75), 0 calc(2 * var(--u)) calc(4 * var(--u)) rgba(0,0,0,.35); }
+  #icat { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(22 * var(--u)); letter-spacing: calc(7 * var(--u)); margin-top: calc(6 * var(--u));
+       color: rgba(255,255,255,.80); text-transform: uppercase; text-shadow: 0 calc(1 * var(--u)) calc(3 * var(--u)) rgba(0,0,0,.4); padding-left: calc(7 * var(--u)); }
+  #iprice { font-family: 'HudPixel', monospace; font-size: calc(46 * var(--u)); margin-top: calc(10 * var(--u)); display: none; }
+  #buy { position: absolute; transform: translate(-50%, -50%); display: none; align-items: center; gap: calc(14 * var(--u));
+       font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(28 * var(--u)); color: #fff; letter-spacing: calc(1 * var(--u));
+       text-shadow: 0 calc(2 * var(--u)) calc(4 * var(--u)) rgba(0,0,0,.5); white-space: nowrap; }
+  #buy .key { width: calc(44 * var(--u)); height: calc(44 * var(--u)); border-radius: 50%; background: #fff; color: #141414; display: flex; align-items: center; justify-content: center;
+       font-size: calc(26 * var(--u)); box-shadow: 0 0 calc(10 * var(--u)) rgba(255,255,255,.8); text-shadow: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <img id="bg" alt="">
+  <div id="haze"></div>
+
+  <div id="wheel">
+    <svg class="ring" id="ring">
+      <defs>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+    </svg>
+    <div id="prods"></div>
+    <div id="tabs"><div class="tab on">Accesorios</div><div class="tab">Ropa</div></div>
+    <div id="center"><div id="iname"></div><div id="icat"></div><div id="iprice" class="t"></div></div>
+    <div id="buy"><span class="key">E</span><span id="buytxt"></span></div>
+  </div>
+
+  <div id="hud">
+    <div id="stats">
+      <div id="clock" class="t" data-t="03:49">03:49</div>
+      <div id="money" class="t" data-t="$09999900">$09999900</div>
+      <div id="vitals">
+        <svg class="heart" viewBox="0 0 40 36"><defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb3ea"/><stop offset=".45" stop-color="#ff3fc0"/><stop offset="1" stop-color="#c8008e"/></linearGradient></defs><path d="M20 34 C 8 25, 1 18, 1 10.5 C 1 4.5, 5.5 1, 10.5 1 C 14.5 1, 18 3.5, 20 7 C 22 3.5, 25.5 1, 29.5 1 C 34.5 1, 39 4.5, 39 10.5 C 39 18, 32 25, 20 34 Z" fill="url(#hg)" stroke="#4a0033" stroke-width="2.4"/><ellipse cx="11" cy="9" rx="4.5" ry="3" fill="#fff" opacity=".75"/></svg>
+        <div class="t" data-t="195">195</div>
+        <svg class="heart" viewBox="0 0 40 36"><path d="M20 34 C 8 25, 1 18, 1 10.5 C 1 4.5, 5.5 1, 10.5 1 C 14.5 1, 18 3.5, 20 7 C 22 3.5, 25.5 1, 29.5 1 C 34.5 1, 39 4.5, 39 10.5 C 39 18, 32 25, 20 34 Z" fill="url(#hg)" stroke="#4a0033" stroke-width="2.4"/><ellipse cx="11" cy="9" rx="4.5" ry="3" fill="#fff" opacity=".75"/></svg>
+        <div class="t" data-t="200">200</div>
+      </div>
+      <div id="stars"></div>
+    </div>
+    <div id="weapon">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="fg" x1="0.7" y1="0.05" x2="0.25" y2="1">
+            <stop offset="0" stop-color="#7ff6f2"/><stop offset=".45" stop-color="#9fd8ff"/><stop offset=".75" stop-color="#e59bff"/><stop offset="1" stop-color="#ff7fd4"/>
+          </linearGradient>
+        </defs>
+        <g fill="url(#fg)" stroke="#2b1f4a" stroke-width="2.5" stroke-linejoin="round">
+          <path d="M50 64 L72 66 L50 100 L20 100 Z"/>
+          <rect x="44" y="20" width="48" height="50" rx="13"/>
+          <circle cx="52" cy="24" r="9"/><circle cx="63" cy="20" r="9"/><circle cx="75" cy="20" r="9"/><circle cx="86" cy="25" r="8"/>
+          <rect x="38" y="44" width="34" height="15" rx="7.5"/>
+        </g>
+        <path d="M52 21 L84 21" stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="map">
+    <svg viewBox="-100 -100 200 200">
+      <defs><clipPath id="mc"><circle r="86"/></clipPath></defs>
+      <g clip-path="url(#mc)">
+        <rect x="-100" y="-100" width="200" height="200" fill="#bde7f6"/>
+        <path d="M-100 -30 L-20 -95 L60 -100 L100 -60 L100 10 L40 30 L-10 70 L-100 60 Z" fill="#d9f2e4"/>
+        <g fill="#27c07c">
+          <rect x="-58" y="-40" width="34" height="22" rx="3" transform="rotate(-28)"/>
+          <rect x="-12" y="-62" width="30" height="20" rx="3" transform="rotate(-28)"/>
+          <rect x="-30" y="-8" width="40" height="24" rx="3" transform="rotate(-28)"/>
+          <rect x="22" y="-28" width="26" height="20" rx="3" transform="rotate(-28)"/>
+        </g>
+        <path d="M-100 40 L100 -75" stroke="#fff" stroke-width="12"/>
+        <path d="M-100 40 L100 -75" stroke="#1f2a33" stroke-width="2" stroke-dasharray="6 6" opacity=".25"/>
+        <path d="M-40 -100 L45 100" stroke="#fff" stroke-width="9"/>
+        <path d="M30 -100 L100 30" stroke="#22222a" stroke-width="16"/>
+        <path d="M30 -100 L100 30" stroke="#fff" stroke-width="2" stroke-dasharray="5 6"/>
+      </g>
+      <circle r="86" fill="none" stroke="#fff" stroke-width="4"/>
+      <circle r="91" fill="none" stroke="#f5b9e2" stroke-width="7"/>
+      <g transform="translate(-6 8)">
+        <rect x="-12" y="-12" width="24" height="24" rx="5" fill="#111" stroke="#fff" stroke-width="2.5"/>
+        <text x="0" y="6.5" font-family="Anton" font-size="17" fill="#fff" text-anchor="middle">B</text>
+      </g>
+      <path d="M-4 -26 L5 -6 L-4 -11 L-13 -6 Z" fill="#fff" stroke="#123" stroke-width="2" stroke-linejoin="round" transform="translate(4 0)"/>
+      <g transform="translate(64 -64)"><circle r="12.5" fill="#111" stroke="#fff" stroke-width="2.5"/><text x="0" y="5.5" font-family="Oswald" font-weight="600" font-size="15" fill="#fff" text-anchor="middle">N</text></g>
+      <g transform="translate(0 92)"><circle r="11" fill="#2fd16f" stroke="#fff" stroke-width="2.5"/><path d="M-6 1 L0 -5 L6 1 L6 6 L-6 6 Z" fill="#fff"/></g>
+    </svg>
+  </div>
+</div>
+
+<script>
+// ----------------------------------------------------------------------------
+//  Configuración
+// ----------------------------------------------------------------------------
+const P = new URLSearchParams(location.search);
+const FMT = P.get('fmt') || '4x5';
+const W = 1080, U = W / 1170;
+const L = {
+  '4x5':  { h: 1350, hudTop: 4,   hudRight: 13, map: [120, 1300, 80], wheel: [585, 770, 185, 405], tabsY: 295, buyY: 1265 },
+  '9x16': { h: 1920, hudTop: 165, hudRight: 30, map: [140, 1560, 84], wheel: [585, 1020, 185, 405], tabsY: 540, buyY: 1500 },
+}[FMT];
+const H = L.h;
+
+// Accesorios reales de betasnow.cl (sentido horario desde arriba)
+const ITEMS = [
+  { img: 'calcetines.png', name: 'Calcetines HUF x Spitfire', cat: 'Calcetines', price: '$19.990', s: 1.00 },
+  { img: 'antiparras.png', name: 'Antiparras Electric EK1',   cat: 'Antiparras', price: '$74.900', s: 1.02 },
+  { img: 'jockey.png',     name: 'Jockey HUF Sector',         cat: 'Jockeys',    price: '$47.990', s: 1.05 },
+  { img: 'bolsa.png',      name: 'Bolsa HUF Cheetah',         cat: 'Bolsos',     price: '$11.990', s: 0.92 },
+  { img: 'guantes.png',    name: "Guantes Shorty's Camo",     cat: 'Guantes',    price: '$34.900', s: 0.95 },
+  { img: 'beanie.png',     name: 'Beanie Terror OG Logo',     cat: 'Gorros',     price: '$16.990', s: 0.92 },
+  { img: 'lentes.png',     name: 'Lentes Volcom Stoneview',   cat: 'Lentes',     price: '$19.900', s: 1.00 },
+  { img: 'casco.png',      name: 'Casco Pro-Tec Classic',     cat: 'Cascos',     price: '$43.900', s: 0.88 },
+];
+
+// ----------------------------------------------------------------------------
+document.documentElement.style.setProperty('--u', U + 'px');
+const $ = s => document.querySelector(s);
+const stage = $('#stage');
+stage.style.width = W + 'px'; stage.style.height = H + 'px';
+
+// HUD
+const hud = $('#hud');
+hud.style.top = (L.hudTop * U) + 'px'; hud.style.right = (L.hudRight * U) + 'px';
+const starSvg = '<svg class="star" viewBox="-20 -20 40 40"><path d="M0 -17 L5 -6 L17 -5.5 L8 2.5 L10.5 15 L0 8.5 L-10.5 15 L-8 2.5 L-17 -5.5 L-5 -6 Z" fill="#23308c" stroke="#9fb0ff" stroke-width="2.4" stroke-linejoin="round"/><path d="M0 -11 L3 -4 L-3 -4 Z" fill="#6f80e8" opacity=".8"/></svg>';
+$('#stars').innerHTML = starSvg.repeat(6);
+
+// Minimapa
+const [mx, my, mr] = L.map, map = $('#map');
+const msz = mr * 2 * 1.16 * U;
+map.style.width = msz + 'px'; map.style.height = msz + 'px';
+map.style.left = (mx * U - msz / 2) + 'px'; map.style.top = (my * U - msz / 2) + 'px';
+
+// Rueda
+const [cx, cy, rin, rout] = L.wheel.map(v => v * U);
+const ring = $('#ring');
+ring.setAttribute('viewBox', `0 0 ${W} ${H}`);
+const NS = 'http://www.w3.org/2000/svg';
+function sector(i) {
+  const a0 = (-90 + 45 * i - 22.5) * Math.PI / 180, a1 = (-90 + 45 * i + 22.5) * Math.PI / 180;
+  const g = 6 * U, di = Math.asin(g / rin), dout = Math.asin(g / rout);
+  const p = (r, a) => `${(cx + r * Math.cos(a)).toFixed(2)} ${(cy + r * Math.sin(a)).toFixed(2)}`;
+  return `M ${p(rout, a0 + dout)} A ${rout} ${rout} 0 0 1 ${p(rout, a1 - dout)} L ${p(rin, a1 - di)} A ${rin} ${rin} 0 0 0 ${p(rin, a0 + di)} Z`;
+}
+const inner = document.createElementNS(NS, 'circle');
+inner.setAttribute('cx', cx); inner.setAttribute('cy', cy); inner.setAttribute('r', rin - 10 * U);
+inner.setAttribute('fill', 'rgba(255,255,255,.07)'); ring.appendChild(inner);
+const segs = ITEMS.map((_, i) => {
+  const el = document.createElementNS(NS, 'path');
+  el.setAttribute('d', sector(i)); el.setAttribute('class', 'seg'); el.setAttribute('stroke-linejoin', 'round');
+  ring.appendChild(el); return el;
+});
+const prods = ITEMS.map((it, i) => {
+  const a = (-90 + 45 * i) * Math.PI / 180, rm = (rin + rout) / 2 + 6 * U, box = 238 * U * it.s;
+  const d = document.createElement('div'); d.className = 'prod';
+  d.style.left = (cx + rm * Math.cos(a)) + 'px'; d.style.top = (cy + rm * Math.sin(a)) + 'px';
+  d.style.width = box + 'px'; d.style.height = box + 'px';
+  d.innerHTML = `<img src="../assets/productos/${it.img}">`;
+  $('#prods').appendChild(d); return d;
+});
+const tabs = $('#tabs'); tabs.style.left = cx + 'px'; tabs.style.top = (L.tabsY * U) + 'px';
+const center = $('#center'); center.style.left = cx + 'px'; center.style.top = cy + 'px';
+const buy = $('#buy'); buy.style.left = cx + 'px'; buy.style.top = (L.buyY * U) + 'px';
+
+// ----------------------------------------------------------------------------
+//  Estado (lo llama el script de render en cada cuadro)
+//   mode: 'hud' | 'rueda'   bg: ruta de imagen de fondo
+//   blur: 0..1  open: 0..1  sel: índice  pop: 0..1  price: bool  buy: bool
+// ----------------------------------------------------------------------------
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+window.setState = async (s) => {
+  const rueda = s.mode === 'rueda';
+  const bg = $('#bg');
+  if (rueda && s.bg) {
+    if (bg.getAttribute('src') !== s.bg) { bg.src = s.bg; await bg.decode(); }
+    bg.style.display = 'block';
+    const b = s.blur ?? 1;
+    bg.style.filter = `blur(${(13 * b * U).toFixed(2)}px) brightness(${1 + .10 * b}) saturate(${1 - .12 * b})`;
+    $('#haze').style.opacity = b;
+  } else { bg.style.display = 'none'; $('#haze').style.opacity = 0; }
+
+  const o = rueda ? ease(Math.max(0, Math.min(1, s.open ?? 1))) : 0;
+  const wh = $('#wheel');
+  wh.style.opacity = o;
+  wh.style.transformOrigin = `${cx}px ${cy}px`;
+  wh.style.transform = `scale(${.86 + .14 * o})`;
+
+  const sel = s.sel ?? 2, pop = s.pop ?? 1;
+  segs.forEach((el, i) => el.classList.toggle('sel', i === sel));
+  prods.forEach((d, i) => { d.style.transform = `translate(-50%,-50%) scale(${i === sel ? 1 + .09 * Math.sin(Math.PI * Math.min(pop, 1) / 2) : 1})`; });
+  const it = ITEMS[sel];
+  $('#iname').textContent = it.name; $('#icat').textContent = it.cat;
+  const pr = $('#iprice'); pr.style.display = s.price ? 'inline-block' : 'none'; pr.textContent = it.price; pr.dataset.t = it.price;
+  buy.style.display = s.buy ? 'flex' : 'none'; $('#buytxt').textContent = 'COMPRAR EN BETASNOW.CL';
+  await document.fonts.ready;
+  return true;
+};
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))]);
+</script>
+</body>
+</html>
