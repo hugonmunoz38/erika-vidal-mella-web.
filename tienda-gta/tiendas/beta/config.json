@@ -1,0 +1,40 @@
+{
+  "id": "beta",
+  "nombre": "Beta Snow",
+  "web": "BETASNOW.CL",
+  "handle": "@BETASNOWCL",
+  "logo": "marca/beta_logo_negro.png",
+  "logoInvert": true,
+  "bannerText": "STREETWEAR<br>&amp; SNOW",
+  "accent": "#ffd21a",
+  "mapLetter": "B",
+  "tabs": ["Accesorios", "Ropa"],
+  "selected": 2,
+  "items": [
+    { "img": "calcetines.png", "name": "Calcetines HUF x Spitfire", "cat": "Calcetines", "price": "$19.990", "s": 1.00 },
+    { "img": "antiparras.png", "name": "Antiparras Electric EK1",   "cat": "Antiparras", "price": "$74.900", "s": 1.02 },
+    { "img": "jockey.png",     "name": "Jockey HUF Sector",         "cat": "Jockeys",    "price": "$47.990", "s": 1.05 },
+    { "img": "bolsa.png",      "name": "Bolsa HUF Cheetah",         "cat": "Bolsos",     "price": "$11.990", "s": 0.92 },
+    { "img": "guantes.png",    "name": "Guantes Shorty's Camo",     "cat": "Guantes",    "price": "$34.900", "s": 0.95 },
+    { "img": "beanie.png",     "name": "Beanie Terror OG Logo",     "cat": "Gorros",     "price": "$16.990", "s": 0.92 },
+    { "img": "lentes.png",     "name": "Lentes Volcom Stoneview",   "cat": "Lentes",     "price": "$19.900", "s": 1.00 },
+    { "img": "casco.png",      "name": "Casco Pro-Tec Classic",     "cat": "Cascos",     "price": "$43.900", "s": 0.88 }
+  ],
+  "outfit": {
+    "title": "Outfit HUF Sector",
+    "items": [
+      { "name": "Jockey HUF Sector",         "price": "$47.990", "value": 47990, "desc": "Jockey 6 paneles con bordado biohazard. Talla única." },
+      { "name": "Polera HUF Sector S/S",     "price": "$36.990", "value": 36990, "desc": "Polera negra, logo cromado al frente y biohazard en la espalda." },
+      { "name": "Short HUF FC Easy",         "price": "$49.990", "value": 49990, "desc": "Short de nylon con estampado tono sobre tono." },
+      { "name": "Calcetines HUF x Spitfire", "price": "$19.990", "value": 19990, "desc": "Calcetines espiral HUF x Spitfire." }
+    ],
+    "footer": "Disponible en tienda y en betasnow.cl"
+  },
+  "final": { "title": "OUTFIT COMPLETADO", "sub": "ESTILO +" },
+  "video": {
+    "walk": "ia/caminata_kling.mp4",
+    "walkCrop4x5": "crop=720:900:0:140",
+    "midTime": 2.3,
+    "tryon": "ia/probador_kling.mp4"
+  }
+}

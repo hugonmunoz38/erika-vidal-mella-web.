@@ -1,0 +1,50 @@
+{
+  "id": "bold",
+  "nombre": "Bold",
+  "web": "BOLD.CL",
+  "handle": "@BOLDCHILE",
+  "logo": "marca/bold_logo.svg",
+  "logoInvert": false,
+  "bannerText": "NUEVAS<br>LLEGADAS",
+  "accent": "#ffd600",
+  "accentInk": "#111111",
+  "mapLetter": "B",
+  "tabs": ["Nuevas llegadas", "Ropa"],
+  "selected": 2,
+  "items": [
+    { "img": "jordan_6rings.png", "name": "Jordan 6 Rings",       "cat": "Jordan",      "price": "$179.990", "s": 1.00 },
+    { "img": "puma_lafrance.png", "name": "Puma La Francé",       "cat": "Puma",        "price": "$119.990", "s": 1.00 },
+    { "img": "nike_am95.png",     "name": "Nike Air Max 95",      "cat": "Nike",        "price": "$206.990", "s": 1.05 },
+    { "img": "nb_983.png",        "name": "New Balance 983",      "cat": "New Balance", "price": "$144.990", "s": 1.00 },
+    { "img": "nb_1890a.png",      "name": "New Balance 1890A",    "cat": "New Balance", "price": "$164.990", "s": 1.00 },
+    { "img": "on_cloudsoma.png",  "name": "On Cloudsoma Hike",    "cat": "On",          "price": "$169.990", "s": 1.00 },
+    { "img": "nike_af1.png",      "name": "Nike Air Force 1 Low", "cat": "Nike",        "price": "$122.990", "s": 1.00 },
+    { "img": "jordan_aura7.png",  "name": "Jordan Max Aura 7",    "cat": "Jordan",      "price": "$132.990", "s": 1.00 }
+  ],
+  "outfit": {
+    "title": "Nuevas llegadas",
+    "totalLabel": "Comprar",
+    "items": [
+      { "name": "Nike Air Max 95 Negro",  "price": "$206.990", "value": 206990, "img": "nike_am95.png",     "desc": "Air Max 95 negras: capas degradadas y Max Air visible en talón y antepié." },
+      { "name": "Jordan 6 Rings Negro",   "price": "$179.990", "value": 179990, "img": "jordan_6rings.png", "buy": false, "desc": "Jordan 6 Rings negras con suela translúcida." },
+      { "name": "New Balance 983 Burdeo", "price": "$144.990", "value": 144990, "img": "nb_983.png",        "buy": false, "desc": "New Balance 983 en burdeo." },
+      { "name": "Puma La Francé Negro",   "price": "$119.990", "value": 119990, "img": "puma_lafrance.png", "buy": false, "desc": "Puma La Francé negras." }
+    ],
+    "footer": "Disponible en tiendas Bold y en bold.cl"
+  },
+  "final": { "title": "ZAPAS DESBLOQUEADAS", "sub": "ESTILO +" },
+  "video": {
+    "walk": "ia/caminata_kling.mp4",
+    "walkCrop4x5": "crop=720:900:0:140",
+    "midTime": 2.3,
+    "tryon": "ia/probador_kling.mp4",
+    "previewBg": "ref/fachada_bold.webp"
+  },
+  "prompts": {
+    "escena": "Ultra-realistic next-generation open-world crime video game screenshot (Unreal Engine 5 look) set in a sunny Miami-like coastal city at golden hour, warm orange light with pink and teal accents. Third-person camera behind and slightly above a young man in his 20s in a white t-shirt, black track pants and white socks, walking on a sidewalk toward a sneaker store whose facade matches the reference photo: black facade with a big yellow square sign with the letters B O L D in a 2x2 grid, yellow light boxes, open entrance showing sneaker walls and tables. Palm trees, pastel art-deco buildings. Keep sign, entrance and man inside the central 70% of the frame height. Vertical 9:16. No HUD, no UI, no other text.",
+    "caminata": "Third-person open-world video game gameplay. The camera smoothly follows behind the man as he walks forward along the sunlit sidewalk and into the open entrance of the BOLD sneaker store. Natural walking animation, palm trees sway, warm golden-hour light. The yellow BOLD sign stays sharp and unchanged. One continuous tracking shot, no cuts, no text.",
+    "probador_frente": "Same man inside the Bold store, sitting on a black bench in front of a floor mirror, wearing the black Nike Air Max 95 sneakers from the reference, white socks, black track pants and white t-shirt; sneaker walls with yellow shelf lighting behind. Video-game shop preview framing, full body. Vertical 9:16, no text.",
+    "probador_espalda": "Same shot, the man now standing up, posing with one foot forward to show the Air Max 95 side profile.",
+    "probador_video": "He finishes lacing the Air Max 95, stands up, steps forward and looks down at his new sneakers, then poses showing the side profile. Static camera, slow push-in, no cuts, no text."
+  }
+}

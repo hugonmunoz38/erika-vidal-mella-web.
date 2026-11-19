@@ -1,0 +1,50 @@
+{
+  "id": "vans",
+  "nombre": "Vans Chile",
+  "web": "VANS.CL",
+  "handle": "@VANS_CHILE",
+  "logo": "marca/vans_logo.svg",
+  "logoInvert": false,
+  "bannerText": "OFF THE WALL<br>NEW IN",
+  "bannerBg": "repeating-conic-gradient(#111 0 25%, #f2f2f2 0 50%) 0 0 / calc(36 * var(--u)) calc(36 * var(--u))",
+  "accent": "#e4002b",
+  "accentInk": "#ffffff",
+  "mapLetter": "V",
+  "tabs": ["New In", "Ropa"],
+  "selected": 2,
+  "items": [
+    { "img": "knu_skool.png",           "name": "Knu Skool Leopardo",   "cat": "Clásicos",    "price": "$89.990",  "s": 1.00 },
+    { "img": "sk8hi_wp.png",            "name": "Sk8-Hi Waterproof",    "cat": "All Weather", "price": "$179.990", "s": 0.95 },
+    { "img": "old_skool_wafflecup.png", "name": "Old Skool WaffleCup",  "cat": "Skate",       "price": "$84.990",  "s": 1.05 },
+    { "img": "half_cab.png",            "name": "Half Cab",             "cat": "Skate",       "price": "$84.990",  "s": 1.00 },
+    { "img": "upland.png",              "name": "Upland Verde",         "cat": "Lifestyle",   "price": "$89.990",  "s": 1.00 },
+    { "img": "authentic44.png",         "name": "Premium Authentic 44", "cat": "Premium",     "price": "$99.990",  "s": 1.00 },
+    { "img": "crosspath_xc.png",        "name": "Crosspath XC GORE-TEX","cat": "Outdoor",     "price": "$199.990", "s": 1.00 },
+    { "img": "rowan_z3.png",            "name": "Rowan Z3 Azul",        "cat": "Skate",       "price": "$94.990",  "s": 1.00 }
+  ],
+  "outfit": {
+    "title": "Outfit New In",
+    "items": [
+      { "name": "Chaqueta Torrey Coaches",  "price": "$79.990", "value": 79990, "img": "o_chaqueta.png", "desc": "Coach jacket de ripstop gris topo, botones a presión y logo Vans bordado." },
+      { "name": "Polera Knu Patch",         "price": "$19.990", "value": 19990, "img": "o_polera.png",   "desc": "Polera negra holgada: parche chico al frente y grande en la espalda." },
+      { "name": "Short Check-5 Baggy Denim","price": "$49.990", "value": 49990, "img": "o_short.png",    "desc": "Short de jean negro deslavado, corte baggy bajo la rodilla." },
+      { "name": "Old Skool WaffleCup",      "price": "$84.990", "value": 84990, "img": "old_skool_wafflecup.png", "desc": "Old Skool de skate en gamuza negra con rojo burdeo, suela WaffleCup." }
+    ],
+    "footer": "Disponible en tiendas Vans y en vans.cl"
+  },
+  "final": { "title": "OUTFIT COMPLETADO", "sub": "OFF THE WALL +" },
+  "video": {
+    "walk": "ia/caminata_kling.mp4",
+    "walkCrop4x5": "crop=720:900:0:140",
+    "midTime": 2.3,
+    "tryon": "ia/probador_kling.mp4",
+    "previewBg": "ref/banner_vans.jpg"
+  },
+  "prompts": {
+    "escena": "Ultra-realistic next-generation open-world crime video game screenshot (Unreal Engine 5 look) set in a sunny Miami-like coastal city at golden hour, warm orange light with pink and teal accents. Third-person camera behind and slightly above a young man in his 20s with curly dark hair, wearing a grey t-shirt and jeans, walking on the sidewalk toward the wide-open entrance of a skate shoe store. The store front has a red-and-white sign with the Vans logo from the reference image, a black-and-white checkerboard band above the entrance, and through the glass walls of sneakers, skateboards on the wall and clothing racks. Palm trees, pastel art-deco buildings, skaters in the distance. Keep the sign, entrance and man inside the central 70% of the frame height. Vertical 9:16. No HUD, no UI, no other text.",
+    "caminata": "Third-person open-world video game gameplay. The camera smoothly follows behind the man at a constant distance as he walks forward along the sunlit sidewalk and turns into the open entrance of the Vans store, revealing the sneaker wall inside. Natural walking animation, palm trees sway, warm golden-hour light. The store sign stays sharp and unchanged. One continuous tracking shot, no cuts, no text.",
+    "probador_frente": "Same man inside the Vans store fitting area, facing the camera, full body, wearing exactly: the grey coach jacket (ref), the black t-shirt with the small Vans patch (ref), the black baggy denim shorts (ref) and the black and burgundy Old Skool sneakers (ref). Video-game clothing-store preview framing, checkerboard floor, sneaker wall and skateboards behind. Vertical 9:16, no text.",
+    "probador_espalda": "Same shot, same man and outfit, turned 180 degrees showing the back of the jacket, looking over his shoulder.",
+    "probador_video": "He adjusts the jacket collar, looks down at his new Old Skool sneakers, then slowly turns around to show the back of the outfit, looking back over his shoulder at the camera. Static camera, slow push-in, no cuts, no text."
+  }
+}
