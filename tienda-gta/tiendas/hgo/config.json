@@ -1,0 +1,118 @@
+{
+  "id": "hgo",
+  "nombre": "HGO (demo)",
+  "web": "HGO STORE",
+  "handle": "TU MARCA AQUÍ",
+  "logo": "marca/hgo_logo_rojo.png",
+  "logoInvert": false,
+  "bannerText": "STREETWEAR<br>NEW SEASON",
+  "bannerBg": "repeating-linear-gradient(-45deg, #e8001c 0 calc(18 * var(--u)), #ffffff calc(18 * var(--u)) calc(36 * var(--u)))",
+  "accent": "#e8001c",
+  "accentInk": "#ffffff",
+  "mapLetter": "H",
+  "tabs": [
+    "Ropa",
+    "Accesorios"
+  ],
+  "selected": 2,
+  "items": [
+    {
+      "img": "poleron.png",
+      "name": "Polerón Oversize",
+      "cat": "Polerones",
+      "price": "$34.990",
+      "s": 1.0
+    },
+    {
+      "img": "polera.png",
+      "name": "Polera Boxy",
+      "cat": "Poleras",
+      "price": "$14.990",
+      "s": 0.95
+    },
+    {
+      "img": "jockey_bio.png",
+      "name": "Jockey Bio",
+      "cat": "Jockeys",
+      "price": "$24.990",
+      "s": 1.05
+    },
+    {
+      "img": "chaqueta_denim.png",
+      "name": "Chaqueta Denim",
+      "cat": "Chaquetas",
+      "price": "$39.990",
+      "s": 1.0
+    },
+    {
+      "img": "jeans.png",
+      "name": "Jeans Wide Leg",
+      "cat": "Jeans",
+      "price": "$29.990",
+      "s": 1.0
+    },
+    {
+      "img": "camisa_rayas.png",
+      "name": "Camisa Rayas",
+      "cat": "Camisas",
+      "price": "$19.990",
+      "s": 0.95
+    },
+    {
+      "img": "cargo.png",
+      "name": "Cargo Oliva",
+      "cat": "Pantalones",
+      "price": "$27.990",
+      "s": 1.0
+    },
+    {
+      "img": "short_nylon.png",
+      "name": "Short Nylon",
+      "cat": "Shorts",
+      "price": "$16.990",
+      "s": 0.92
+    }
+  ],
+  "outfit": {
+    "title": "Outfit Bio",
+    "items": [
+      {
+        "name": "Jockey Bio Negro/Amarillo",
+        "price": "$24.990",
+        "value": 24990,
+        "desc": "Jockey 6 paneles con bordado bio. Talla única."
+      },
+      {
+        "name": "Polera Chrome Negra",
+        "price": "$16.990",
+        "value": 16990,
+        "desc": "Polera negra con logo cromado al frente y estampado grande en la espalda."
+      },
+      {
+        "name": "Short Nylon Negro",
+        "price": "$16.990",
+        "value": 16990,
+        "desc": "Short de nylon con estampado tono sobre tono."
+      },
+      {
+        "name": "Calcetines Spiral",
+        "price": "$5.990",
+        "value": 5990,
+        "desc": "Calcetines altos con franjas espiral."
+      }
+    ],
+    "footer": "Disponible en HGO Store"
+  },
+  "final": {
+    "title": "OUTFIT COMPLETADO",
+    "sub": "ESTILO +"
+  },
+  "video": {
+    "walk": "ia/caminata_kling.mp4",
+    "walkCrop4x5": "crop=720:900:0:140",
+    "midTime": 2.3,
+    "tryon": "../beta/ia/probador_kling.mp4"
+  },
+  "nota": "Demo genérica para vender el formato: reutiliza las tomas IA de Beta Snow con el letrero reemplazado por el logo HGO (src/reemplazar_letrero.py, tiendas/hgo/letreros.json).",
+  "bannerPanel": "#ffffff"
+}

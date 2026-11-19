@@ -1,0 +1,74 @@
+{
+  "input": "/home/user/erika-vidal-mella-web./tienda-gta/tiendas/beta/ia/caminata_kling.mp4",
+  "output": "/home/user/erika-vidal-mella-web./tienda-gta/tiendas/hgo/ia/caminata_kling.mp4",
+  "frames_dir": "/tmp/claude-0/-home-user-erika-vidal-mella-web-/bf85ccad-8595-5488-9f4f-883fa5021792/scratchpad/demo/f",
+  "debug_dir": "/tmp/claude-0/-home-user-erika-vidal-mella-web-/bf85ccad-8595-5488-9f4f-883fa5021792/scratchpad/demo/debug",
+  "fps": 24,
+  "targets": [
+    {
+      "name": "letrero",
+      "type": "logo",
+      "ref_frame": 1,
+      "region": [
+        160,
+        195,
+        560,
+        400
+      ],
+      "polarity": "light",
+      "min_area": 400,
+      "logo": "/home/user/erika-vidal-mella-web./tienda-gta/tiendas/hgo/marca/hgo_logo_rojo.png",
+      "style": "neon",
+      "color": [
+        235,
+        10,
+        25
+      ],
+      "logo_fill": 0.95,
+      "glow": 0.6,
+      "erase_dilate": 3,
+      "logo_scale": [
+        0.62,
+        2.0
+      ],
+      "fill": "median"
+    },
+    {
+      "name": "pared",
+      "type": "logo",
+      "ref_frame": 1,
+      "region": [
+        12,
+        488,
+        135,
+        552
+      ],
+      "polarity": "dark",
+      "min_area": 20,
+      "logo": "/home/user/erika-vidal-mella-web./tienda-gta/tiendas/hgo/marca/hgo_logo_rojo.png",
+      "style": "flat",
+      "color": [
+        215,
+        0,
+        20
+      ],
+      "logo_fill": 0.98,
+      "glow": 0,
+      "erase_dilate": 2,
+      "logo_scale": [
+        0.85,
+        2.0
+      ],
+      "fill": "median"
+    },
+    {
+      "name": "alfombra",
+      "type": "alfombra",
+      "frames": [
+        50,
+        145
+      ],
+      "y_min": 0.55
+    }
+  ]
+}

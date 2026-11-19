@@ -70,7 +70,7 @@
   #shop { position: absolute; display: none; width: calc(470 * var(--u)); font-family: 'Inter', sans-serif; color: #fff; }
   #shop .banner { height: calc(124 * var(--u)); position: relative; overflow: hidden;
        background: repeating-linear-gradient(-45deg, var(--acc) 0 calc(18 * var(--u)), #111 calc(18 * var(--u)) calc(36 * var(--u))); }
-  #shop .banner::after { content: ''; position: absolute; inset: calc(10 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)); background: linear-gradient(120deg, #0b0b0b, #1d1d1d); }
+  #shop .banner::after { content: ''; position: absolute; inset: calc(10 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)); background: var(--panel, linear-gradient(120deg, #0b0b0b, #1d1d1d)); }
   #shop .banner img { position: absolute; z-index: 1; left: calc(32 * var(--u)); top: 50%; height: calc(78 * var(--u)); transform: translateY(-50%); filter: var(--logoFilter); }
   #shop .banner span { position: absolute; z-index: 1; right: calc(28 * var(--u)); top: 50%; transform: translateY(-50%); text-align: right;
        font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(19 * var(--u)); letter-spacing: calc(3 * var(--u)); color: var(--acc); line-height: 1.25; }
@@ -304,6 +304,7 @@ const clp = v => '$' + v.toLocaleString('es-CL').replace(/,/g, '.');
 $('#totalPrice').textContent = clp(TOTAL);
 $('#total .n').textContent = STORE.outfit.totalLabel || 'Comprar todo';
 if (STORE.bannerBg) document.querySelector('#shop .banner').style.background = STORE.bannerBg;
+if (STORE.bannerPanel) root.setProperty('--panel', STORE.bannerPanel);
 const mpop = $('#moneyPop'); mpop.textContent = '-' + clp(TOTAL); mpop.dataset.t = mpop.textContent;
 $('#finalTitle').textContent = STORE.final.title; $('#finalTitle').dataset.t = STORE.final.title;
 $('#finalSub').textContent = STORE.final.sub;

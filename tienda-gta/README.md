@@ -15,6 +15,7 @@ Formato "tienda dentro del juego", ambientado en una Vice City / Leonida estilo 
 | `tiendas/beta` (Beta Snow) | **Listo**: video completo 4:5 y 9:16, slides de carrusel | Accesorios + outfit HUF Sector |
 | `tiendas/vans` (Vans Chile) | **Vista previa** (rueda, menú, tarjeta final). Faltan los clips IA | New In: 8 zapatillas + outfit New In |
 | `tiendas/bold` (Bold) | **Vista previa** (rueda, menú, tarjeta final). Faltan los clips IA | Nuevas llegadas: 8 zapatillas, prueba de Air Max 95 |
+| `tiendas/hgo` (HGO, **demo para vender el formato**) | **Listo**: video completo 4:5 y 9:16, slides | Prendas genéricas sin marca + logo HGO; reutiliza las tomas IA de Beta con el letrero reemplazado |
 
 Cada tienda tiene `config.json` (productos, precios, textos, colores, logo y los prompts de IA),
 `productos/` (fotos reales recortadas), `marca/` (logo), `ref/` (fotos de referencia), `ia/` (clips IA) y `out/`.
@@ -38,6 +39,8 @@ Los prompts y referencias están en `tiendas/<tienda>/kit/` (`PASOS.md` + `refer
 5. `python3 src/construir.py <tienda>`.
 
 ## Herramientas
+- `src/reemplazar_letrero.py`: cambia los letreros de un clip por otro logo siguiendo la cámara (seguimiento con homografía, borrado y logo con perspectiva; config en `tiendas/hgo/letreros.json`).
+- `src/ia_gratis.py`: genera imágenes/clips con Spaces gratuitos de Hugging Face (requiere token gratuito).
 - `src/escena.html`: HUD, rueda, menú de tienda y tarjeta final (lee `window.STORE`).
 - `src/render.js`: renderiza cuadros con Playwright e inyecta la config de la tienda.
 - `src/construir.py`: monta todo con ffmpeg (incluye la corrección de color).
