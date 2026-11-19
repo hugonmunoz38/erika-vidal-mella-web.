@@ -30,7 +30,7 @@ python3 src/construir.py beta     # o vans / bold
   sobre `video.previewBg`.
 
 ### Para terminar Vans y Bold (requiere créditos de IA, ~20 por tienda en Higgsfield)
-Los prompts están en `prompts` de cada `config.json`:
+Los prompts y referencias están en `tiendas/<tienda>/kit/` (`PASOS.md` + `referencias/`); se pueden generar gratis en ChatGPT/Gemini (imágenes) y Kling/Flow/Dreamina (videos):
 1. `escena` → imagen 9:16 (GPT Image 2.6) con el logo/fachada de `ref/` o `marca/` como referencia.
 2. `caminata` → Kling 3.0, 6 s, image-to-video desde la escena → guardar como `ia/caminata_kling.mp4`.
 3. `probador_frente` y `probador_espalda` → imágenes con las fotos de `productos/` como referencia.
