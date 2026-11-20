@@ -27,6 +27,9 @@
   #fit { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 50% 70%; }
   .piece { position: absolute; transform: translateX(-50%); filter: drop-shadow(0 calc(10 * var(--u)) calc(14 * var(--u)) rgba(0,0,0,.55)); }
   .piece img { width: 100%; display: block; }
+  #photoBg { display: none; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(calc(22 * var(--u))) brightness(.5); }
+  #photo { display: none; transform-origin: 50% 60%; filter: contrast(1.08) saturate(1.12) brightness(1.02); }
+  #vig { display: none; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,.45) 100%); }
   #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
 
   /* etiquetas de precio */
@@ -98,7 +101,7 @@
   <img id="bg" alt="">
   <div id="tint"></div><div id="beam"></div>
   <div id="shadow"></div><div id="podium"></div>
-  <div id="fit"></div>
+  <img id="photoBg" class="abs" alt=""><img id="photo" class="abs" alt=""><div id="vig" class="abs"></div><div id="fit"></div>
   <div id="tags"></div>
   <div id="flash"></div>
 
@@ -133,6 +136,7 @@ const fmtMoney = v => '$' + String(Math.round(v)).padStart(8, '0');
 const L = FMT === '9x16'
   ? { body: [600, 730, 1600], topW: 520, menu: [30, 250], scaleMenu: .74, hud: [40, 170], keys: 1660, toastY: 1080 }
   : { body: [650, 270, 1255], topW: 450, menu: [24, 24], scaleMenu: .64, hud: [26, 22], keys: 1290, toastY: 700 };
+if (C.layout && C.layout[FMT]) Object.assign(L, C.layout[FMT]);
 const [cx, yTop, yFeet] = L.body;
 
 $('#bg').src = base + C.bg;
@@ -163,7 +167,8 @@ const ready = Promise.all(C.outfits.flatMap(o => o.items).map(it => new Promise(
   if (imgs[it.img]) return res();
   const im = new Image(); im.onload = () => { imgs[it.img] = im; res(); }; im.src = base + 'productos/' + it.img;
 })));
-window.ready = Promise.all([ready, document.fonts.ready, new Promise(r => { const b = $('#bg'); b.complete ? r() : b.onload = r; })]);
+const readyPh = Promise.all(C.outfits.filter(o => o.photo).map(o => new Promise(r => { const im = new Image(); im.onload = r; im.src = base + o.photo; })));
+window.ready = Promise.all([ready, readyPh, document.fonts.ready, new Promise(r => { const b = $('#bg'); b.complete ? r() : b.onload = r; })]);
 
 // arma el maniquí invisible de un outfit
 let current = -1, pieces = [];
@@ -171,6 +176,7 @@ function buildOutfit(k) {
   const fit = $('#fit'), tags = $('#tags');
   fit.innerHTML = ''; tags.innerHTML = '';
   const o = C.outfits[k];
+  if (o.photo) return buildPhoto(k, o);
   const bodyH = yFeet - yTop;
   const by = s => o.items.find(i => i.slot === s);
   const top = by('top'), bot = by('bottom'), shoes = by('shoes');
@@ -201,6 +207,34 @@ function buildOutfit(k) {
   current = k;
 }
 
+// modo personaje: una foto por outfit, etiquetas ancladas sobre la foto
+let PH = null;
+function buildPhoto(k, o) {
+  const fit = $('#fit'), tags = $('#tags'); fit.innerHTML = ''; tags.innerHTML = '';
+  ['#podium', '#shadow', '#beam', '#bg', '#tint'].forEach(q => $(q).style.display = 'none');
+  const ph = $('#photo'), bg = $('#photoBg'), vg = $('#vig');
+  [ph, bg, vg].forEach(e => e.style.display = 'block');
+  ph.src = base + o.photo; bg.src = base + o.photo;
+  const iw = C.photoSize[0], ih = C.photoSize[1];
+  let w, h, x, y;
+  if (FMT === '9x16') { const sc = Math.max(W / iw, H / ih); w = iw * sc; h = ih * sc; x = (W - w) / 2; y = (H - h) / 2; }
+  else { h = H; w = iw * H / ih; x = W - w - 20 * U; y = 0; }
+  Object.assign(ph.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+  PH = { x, y, w, h };
+  const A = Object.assign({ top: [0.70, 0.30, 'right'], bottom: [0.30, 0.60, 'left'], shoes: [0.30, 0.88, 'left'] }, o.anchors || {});
+  pieces = o.items.map(it => {
+    const [fx, fy, side] = A[it.slot];
+    const ax = x + fx * w, ay = y + fy * h;
+    const tg = document.createElement('div'); tg.className = 'tag ' + side;
+    tg.innerHTML = `<span class="dot"></span><span class="line" style="width:${50 * U}px"></span><div class="box"><div class="n">${it.name}</div><div class="p">${clp(it.price)}<span class="ok">✔</span></div></div>`;
+    tg.style.top = ay + 'px';
+    if (side === 'left') tg.style.right = (W - ax) + 'px'; else tg.style.left = ax + 'px';
+    tg.style.transform = 'translateY(-50%)'; tags.appendChild(tg);
+    return { el: null, tag: tg, slot: it.slot };
+  });
+  current = k;
+}
+
 // ---------------------------------------------------------------------------
 // Línea de tiempo
 // ---------------------------------------------------------------------------
@@ -227,6 +261,7 @@ window.setT = async (t) => {
   const pop = 1 + .045 * (1 - ease(clamp(since / .22)));
   const bob = Math.sin(t * 2 * Math.PI / 2.6) * 5 * U, sway = Math.sin(t * 2 * Math.PI / 3.9) * .35;
   $('#fit').style.transform = `translateY(${bob}px) rotate(${sway}deg) scale(${pop})`;
+  if (PH) $('#photo').style.transform = `scale(${(pop - 1) * .6 + 1 + .012 * Math.sin(t * 2 * Math.PI / 3.2)})`;
   pieces.forEach((p, j) => {
     const a = clamp((since - .08 - j * .07) / .18);
     p.tag.style.opacity = a;
