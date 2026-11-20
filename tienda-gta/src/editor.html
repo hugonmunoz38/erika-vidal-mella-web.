@@ -111,6 +111,8 @@ Object.assign($('#label').style, { left: L.label[0] + 'px', top: L.label[1] + 'p
 Object.assign($('#hud').style, { right: L.hud[0] + 'px', top: L.hud[1] + 'px' });
 $('#toast').style.top = L.toastY + 'px';
 if (FMT === '9x16') $('#desc').style.display = 'none';
+// solo interfaz: el personaje animado va en una pista de video aparte (src/idle_fondo.py)
+if (C.uiOnly) { ['#photo', '#photoBg'].forEach(q => $(q).style.visibility = 'hidden'); stage.style.background = 'transparent'; document.body.style.background = 'transparent'; document.documentElement.style.background = 'transparent'; }
 
 $('#bf').textContent = C.header;
 $('#logo').src = base + C.brand.wordmark; $('#endWm').src = base + C.brand.wordmark;

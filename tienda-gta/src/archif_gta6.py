@@ -29,6 +29,8 @@ ed = json.load(open(os.path.join(T, 'editor.json')))
 for r in ed['rows']:
     if r.get('state'): r['state'] = r['state'].replace('/estados/', '/estados_gta6/')
 ED6 = os.path.join(T, 'editor_gta6.json'); json.dump(ed, open(ED6, 'w'), indent=2, ensure_ascii=False)
+ed['uiOnly'] = True; ed['transparent'] = True
+ED6UI = os.path.join(T, 'editor_gta6_ui.json'); json.dump(ed, open(ED6UI, 'w'), indent=2, ensure_ascii=False)
 
 for fmt in ('9x16', '4x5'):
     vf = 'crop=720:900:0:140,scale=1080:1350:flags=lanczos' if fmt == '4x5' else 'scale=1084:1920:flags=lanczos,crop=1080:1920'
@@ -42,9 +44,13 @@ for fmt in ('9x16', '4x5'):
        f'[0:v][1:v]overlay=0:0:shortest=1,fade=t=out:st={dur - 0.35:.2f}:d=0.35,setsar=1[v]', '-map', '[v]',
        '-c:v', 'libx264', '-crf', '12', '-pix_fmt', 'yuv420p', walk2)
     # 3) editor de outfits
-    edd = os.path.join(B, f'ed_{fmt}'); render('editor.html', ED6, fmt, edd)
+    # personaje con movimiento idle (pista de fondo) + interfaz transparente encima
+    bgv = os.path.join(B, f'edbg_{fmt}.mp4')
+    subprocess.run(['python3', os.path.join(SRC, 'idle_fondo.py'), ED6, fmt, bgv, str(FPS)], check=True)
+    edd = os.path.join(B, f'ed_{fmt}'); render('editor.html', ED6UI, fmt, edd)
     edv = os.path.join(B, f'ed_{fmt}.mp4')
-    ff('-framerate', str(FPS), '-i', os.path.join(edd, 'v_%04d.png'), '-vf', 'fade=t=in:st=0:d=0.35,setsar=1',
+    ff('-i', bgv, '-framerate', str(FPS), '-i', os.path.join(edd, 'v_%04d.png'), '-filter_complex',
+       '[0:v][1:v]overlay=0:0:shortest=1,fade=t=in:st=0:d=0.35,setsar=1[v]', '-map', '[v]',
        '-c:v', 'libx264', '-crf', '12', '-pix_fmt', 'yuv420p', edv)
     # 4) unir + grano de película en todo
     ff('-i', walk2, '-i', edv, '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100',
