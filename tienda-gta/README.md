@@ -38,7 +38,19 @@ Los prompts y referencias están en `tiendas/<tienda>/kit/` (`PASOS.md` + `refer
 4. `probador_video` → Kling 3.0, 5 s, con fotograma inicial y final → guardar como `ia/probador_kling.mp4`.
 5. `python3 src/construir.py <tienda>`.
 
+## Formato 2: "Vestidor" (tiendas/archif)
+Recreación del video de tienda de ropa tipo GTA donde se prueban varios outfits y al final se compra uno,
+**sin IA**: un maniquí invisible arma cada outfit con las fotos reales de producto (recortadas con rembg),
+etiquetas con precio por prenda, menú "BLACK FRIDAY" con el total de cada outfit, cortes rápidos,
+compra del outfit completo (✔ por prenda, descuento de dinero) y tarjeta final con la marca.
+
+```bash
+python3 src/vestidor.py archif     # lee tiendas/archif/vestidor.json
+```
+Outfits, prendas, precios y tiempos se editan en `tiendas/archif/vestidor.json`.
+
 ## Herramientas
+- `src/vestidor.html`, `src/render_vestidor.js`, `src/vestidor.py`: formato vestidor.
 - `src/reemplazar_letrero.py`: cambia los letreros de un clip por otro logo siguiendo la cámara (seguimiento con homografía, borrado y logo con perspectiva; config en `tiendas/hgo/letreros.json`).
 - `src/ia_gratis.py`: genera imágenes/clips con Spaces gratuitos de Hugging Face (requiere token gratuito).
 - `src/escena.html`: HUD, rueda, menú de tienda y tarjeta final (lee `window.STORE`).

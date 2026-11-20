@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Vestidor GTA</title>
+<style>
+  @font-face { font-family: 'HudPixel'; src: url('../assets/fonts/jersey10.woff2') format('woff2'); }
+  @font-face { font-family: 'Anton'; src: url('../assets/fonts/anton.woff2') format('woff2'); }
+  @font-face { font-family: 'Oswald'; font-weight: 600; src: url('../assets/fonts/oswald600.woff2') format('woff2'); }
+  :root { --u: 1px; --blue: #0b1cff; }
+  html, body { margin: 0; background: #000; }
+  #stage { position: relative; overflow: hidden; background: #0c0a10; font-family: 'Inter', sans-serif; }
+  .abs { position: absolute; }
+
+  /* fondo */
+  #bg { position: absolute; inset: -4%; width: 108%; height: 108%; object-fit: cover; filter: blur(calc(9 * var(--u))) brightness(.62) saturate(.9); }
+  #tint { position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 42% at 50% 46%, rgba(70,90,255,.22), rgba(0,0,0,0) 70%),
+                linear-gradient(180deg, rgba(5,8,40,.35), rgba(0,0,0,.15) 40%, rgba(0,0,0,.55)); }
+  #beam { position: absolute; left: 50%; top: -5%; width: calc(900 * var(--u)); height: 95%; transform: translateX(-50%);
+    background: radial-gradient(ellipse 35% 100% at 50% 0%, rgba(255,255,255,.16), rgba(255,255,255,0) 70%); mix-blend-mode: screen; }
+  #podium { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 45%, rgba(120,140,255,.55), rgba(40,60,255,.25) 40%, rgba(0,0,0,0) 70%); }
+  #shadow { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(0,0,0,.65), rgba(0,0,0,0) 70%); }
+
+  /* maniquí invisible */
+  #fit { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 50% 70%; }
+  .piece { position: absolute; transform: translateX(-50%); filter: drop-shadow(0 calc(10 * var(--u)) calc(14 * var(--u)) rgba(0,0,0,.55)); }
+  .piece img { width: 100%; display: block; }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+
+  /* etiquetas de precio */
+  .tag { position: absolute; display: flex; align-items: center; gap: calc(10 * var(--u)); opacity: 0; }
+  .tag .line { height: calc(2 * var(--u)); background: rgba(255,255,255,.85); box-shadow: 0 0 calc(4 * var(--u)) rgba(255,255,255,.6); }
+  .tag .dot { width: calc(12 * var(--u)); height: calc(12 * var(--u)); border-radius: 50%; background: #fff; box-shadow: 0 0 0 calc(4 * var(--u)) rgba(11,28,255,.7); flex: none; }
+  .tag .box { background: rgba(0,0,0,.78); border-left: calc(5 * var(--u)) solid var(--blue); padding: calc(8 * var(--u)) calc(14 * var(--u)); color: #fff; max-width: calc(300 * var(--u)); }
+  .tag .n { font-weight: 600; font-size: calc(19 * var(--u)); line-height: 1.2; text-transform: uppercase; letter-spacing: calc(.3 * var(--u)); }
+  .tag .p { font-family: 'HudPixel', monospace; font-size: calc(34 * var(--u)); color: #8ff3df; line-height: 1; margin-top: calc(2 * var(--u)); }
+  .tag .ok { display: none; color: #2fe07a; font-weight: 800; margin-left: calc(6 * var(--u)); }
+  .tag.paid .ok { display: inline; }
+  .tag.paid .p { color: #2fe07a; }
+  .tag.right { flex-direction: row; }
+  .tag.left { flex-direction: row-reverse; }
+
+  /* menú de tienda (arriba izquierda) */
+  #menu { position: absolute; width: calc(470 * var(--u)); color: #fff; }
+  #bf { display: inline-block; background: #e8551f; color: #fff; font-family: 'Oswald', sans-serif; font-weight: 600; letter-spacing: calc(2 * var(--u));
+        font-size: calc(20 * var(--u)); padding: calc(4 * var(--u)) calc(12 * var(--u)); margin-bottom: calc(6 * var(--u)); }
+  #banner { height: calc(118 * var(--u)); background: var(--blue); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+            background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+            background-size: calc(24 * var(--u)) calc(24 * var(--u)); }
+  #banner img { height: 62%; }
+  .sub { display: flex; justify-content: space-between; background: #000; padding: calc(10 * var(--u)) calc(16 * var(--u)); font-weight: 700; font-size: calc(21 * var(--u)); text-transform: uppercase; }
+  .row { display: flex; align-items: center; height: calc(52 * var(--u)); padding: 0 calc(16 * var(--u)); background: rgba(0,0,0,.66); font-weight: 500; font-size: calc(21 * var(--u)); gap: calc(10 * var(--u)); }
+  .row .n { flex: 1; white-space: nowrap; }
+  .row .p { font-weight: 600; }
+  .row.on { background: #f2f2f2; color: #111; }
+  .row.buy { background: rgba(0,0,0,.82); font-weight: 700; border-top: calc(2 * var(--u)) solid rgba(255,255,255,.18); }
+  .row.buy.on { background: var(--blue); color: #fff; }
+  #desc { margin-top: calc(6 * var(--u)); background: rgba(0,0,0,.66); padding: calc(12 * var(--u)) calc(16 * var(--u)); font-size: calc(18 * var(--u)); line-height: 1.35; }
+  #keys { position: absolute; display: flex; gap: calc(16 * var(--u)); font-weight: 600; font-size: calc(20 * var(--u)); color: #fff; }
+  #keys div { display: flex; align-items: center; gap: calc(8 * var(--u)); background: rgba(0,0,0,.6); padding: calc(6 * var(--u)) calc(12 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u)); border-radius: calc(6 * var(--u)); }
+  #keys b { display: inline-flex; align-items: center; justify-content: center; min-width: calc(30 * var(--u)); height: calc(30 * var(--u)); padding: 0 calc(6 * var(--u)); background: #fff; color: #111; border-radius: calc(5 * var(--u)); font-size: calc(17 * var(--u)); }
+
+  /* HUD dinero */
+  #hud { position: absolute; text-align: right; }
+  .t { position: relative; font-family: 'HudPixel', monospace; line-height: .92; letter-spacing: calc(1.5 * var(--u)); white-space: nowrap; display: inline-block;
+       color: #05302c; -webkit-text-stroke: calc(7 * var(--u)) #05302c; filter: drop-shadow(calc(2 * var(--u)) calc(3 * var(--u)) 0 rgba(0,0,0,.5)); }
+  .t::after { content: attr(data-t); position: absolute; left: 0; top: 0; -webkit-text-stroke: 0;
+       background: linear-gradient(180deg, #e6fffa 0%, #7ff6dd 36%, #32dcbc 60%, #14a88d 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #clock { font-size: calc(58 * var(--u)); }
+  #money { font-size: calc(54 * var(--u)); }
+  #pop { font-size: calc(48 * var(--u)); color: #3a0008; -webkit-text-stroke-color: #3a0008; opacity: 0; }
+  #pop::after { background: linear-gradient(180deg, #ffd0d0 0%, #ff5a5a 45%, #d10f2a 100%); -webkit-background-clip: text; background-clip: text; }
+
+  /* aviso de compra y tarjeta final */
+  #toast { position: absolute; left: 50%; transform: translate(-50%, -50%); opacity: 0; text-align: center; white-space: nowrap; }
+  #toast .a { font-family: 'Anton', sans-serif; font-size: calc(76 * var(--u)); color: #fff; letter-spacing: calc(2 * var(--u));
+              text-shadow: 0 0 calc(18 * var(--u)) rgba(11,28,255,.9), 0 calc(4 * var(--u)) 0 #000; }
+  #toast .b { display: inline-block; margin-top: calc(8 * var(--u)); background: var(--blue); color: #fff; font-family: 'Oswald', sans-serif; font-weight: 600;
+              font-size: calc(28 * var(--u)); letter-spacing: calc(3 * var(--u)); padding: calc(6 * var(--u)) calc(18 * var(--u)); }
+  #end { position: absolute; inset: 0; opacity: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+         background: radial-gradient(ellipse at 50% 45%, rgba(11,28,255,.92), rgba(4,8,90,.96) 70%); }
+  #end .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+               background-size: calc(36 * var(--u)) calc(36 * var(--u)); }
+  #end h1 { position: relative; margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: calc(104 * var(--u)); line-height: 1; letter-spacing: calc(2 * var(--u));
+            color: #2a1800; -webkit-text-stroke: calc(10 * var(--u)) #1a0f00; filter: drop-shadow(calc(3 * var(--u)) calc(5 * var(--u)) 0 rgba(0,0,0,.6)); }
+  #end h1::after { content: attr(data-t); position: absolute; left: 0; top: 0; -webkit-text-stroke: 0;
+            background: linear-gradient(180deg, #fff6b8 0%, #ffd93a 42%, #f2a900 70%, #b97700 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #end .wm { position: relative; width: calc(760 * var(--u)); margin: calc(40 * var(--u)) 0 calc(20 * var(--u)); }
+  #end .fit { position: relative; font-family: 'Oswald', sans-serif; font-weight: 600; color: #fff; font-size: calc(34 * var(--u)); letter-spacing: calc(4 * var(--u)); }
+  #end .web { position: relative; font-family: 'Oswald', sans-serif; font-weight: 600; color: #fff; font-size: calc(36 * var(--u)); letter-spacing: calc(2 * var(--u)); margin-top: calc(26 * var(--u));
+              background: #000; padding: calc(8 * var(--u)) calc(22 * var(--u)); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <img id="bg" alt="">
+  <div id="tint"></div><div id="beam"></div>
+  <div id="shadow"></div><div id="podium"></div>
+  <div id="fit"></div>
+  <div id="tags"></div>
+  <div id="flash"></div>
+
+  <div id="menu">
+    <div id="bf"></div>
+    <div id="banner"><img id="wordmark" alt=""></div>
+    <div class="sub"><span>Outfits</span><span id="cnt"></span></div>
+    <div id="rows"></div>
+    <div class="row buy" id="buyRow"><span class="n">Comprar outfit</span><span class="p" id="buyPrice"></span></div>
+    <div id="desc"></div>
+  </div>
+  <div id="keys"><div><b>E</b>Comprar</div><div><b>Q</b>Girar</div><div><b>ESC</b>Salir</div></div>
+
+  <div id="hud"><div id="clock" class="t" data-t="03:49">03:49</div><br><div id="money" class="t"></div><br><div id="pop" class="t"></div></div>
+  <div id="toast"><div class="a">OUTFIT COMPRADO</div><div class="b" id="toastB"></div></div>
+  <div id="end"><div class="grid"></div><h1 id="endTitle"></h1><img class="wm" id="endWm" alt=""><div class="fit" id="endFit"></div><div class="web" id="endWeb"></div></div>
+</div>
+
+<script>
+const C = window.CFG;                    // config inyectada por el renderizador
+const FMT = new URLSearchParams(location.search).get('fmt') || '9x16';
+const W = 1080, H = FMT === '9x16' ? 1920 : 1350, U = W / 1080;
+document.documentElement.style.setProperty('--u', U + 'px');
+document.documentElement.style.setProperty('--blue', C.brand.blue);
+const $ = s => document.querySelector(s);
+const stage = $('#stage'); stage.style.width = W + 'px'; stage.style.height = H + 'px';
+const base = `../tiendas/${C.id}/`;
+const clp = v => '$' + Math.round(v).toLocaleString('es-CL').replace(/,/g, '.');
+const fmtMoney = v => '$' + String(Math.round(v)).padStart(8, '0');
+
+// Layout por formato: caja del cuerpo (hombros -> pies), menú y HUD
+const L = FMT === '9x16'
+  ? { body: [600, 730, 1600], topW: 520, menu: [30, 250], scaleMenu: .74, hud: [40, 170], keys: 1660, toastY: 1080 }
+  : { body: [650, 270, 1255], topW: 450, menu: [24, 24], scaleMenu: .64, hud: [26, 22], keys: 1290, toastY: 700 };
+const [cx, yTop, yFeet] = L.body;
+
+$('#bg').src = base + C.bg;
+$('#bf').textContent = C.header;
+$('#wordmark').src = base + C.brand.wordmark; $('#endWm').src = base + C.brand.wordmark;
+const menu = $('#menu'); menu.style.left = L.menu[0] + 'px'; menu.style.top = L.menu[1] + 'px';
+menu.style.transformOrigin = '0 0'; menu.style.transform = `scale(${L.scaleMenu})`;
+const hud = $('#hud'); hud.style.right = L.hud[0] + 'px'; hud.style.top = L.hud[1] + 'px';
+const keys = $('#keys'); keys.style.right = '36px'; keys.style.top = L.keys + 'px';
+$('#toast').style.top = L.toastY + 'px';
+const pod = $('#podium'); pod.style.width = 560 * U + 'px'; pod.style.height = 120 * U + 'px'; pod.style.top = (yFeet - 60 * U) + 'px';
+const sh = $('#shadow'); sh.style.width = 420 * U + 'px'; sh.style.height = 70 * U + 'px'; sh.style.top = (yFeet - 30 * U) + 'px';
+const beam = $('#beam'); beam.style.width = 900 * U + 'px';
+
+// filas del menú
+const totals = C.outfits.map(o => o.items.reduce((a, i) => a + i.price, 0));
+const rows = C.outfits.map((o, i) => {
+  const r = document.createElement('div'); r.className = 'row';
+  r.innerHTML = `<span class="n">${o.name}</span><span class="p">${clp(totals[i])}</span>`;
+  $('#rows').appendChild(r); return r;
+});
+$('#endTitle').textContent = C.end.title; $('#endTitle').dataset.t = C.end.title;
+$('#endWeb').textContent = `${C.brand.web} · ${C.brand.handle}`;
+
+// precarga y medidas de las prendas
+const imgs = {};
+const ready = Promise.all(C.outfits.flatMap(o => o.items).map(it => new Promise(res => {
+  if (imgs[it.img]) return res();
+  const im = new Image(); im.onload = () => { imgs[it.img] = im; res(); }; im.src = base + 'productos/' + it.img;
+})));
+window.ready = Promise.all([ready, document.fonts.ready, new Promise(r => { const b = $('#bg'); b.complete ? r() : b.onload = r; })]);
+
+// arma el maniquí invisible de un outfit
+let current = -1, pieces = [];
+function buildOutfit(k) {
+  const fit = $('#fit'), tags = $('#tags');
+  fit.innerHTML = ''; tags.innerHTML = '';
+  const o = C.outfits[k];
+  const bodyH = yFeet - yTop;
+  const by = s => o.items.find(i => i.slot === s);
+  const top = by('top'), bot = by('bottom'), shoes = by('shoes');
+  const ar = it => imgs[it.img].naturalHeight / imgs[it.img].naturalWidth;
+  const P = [];
+  // calzado: apoyado en los pies
+  if (shoes) { const w = (shoes.w || .58) * L.topW, h = w * ar(shoes); P.push({ it: shoes, w, x: cx, y: yFeet - h, z: 4 }); }
+  // parte de arriba: desde los hombros
+  let waist = yTop + bodyH * .40;
+  if (top) { const w = (top.w || 1) * L.topW, h = w * ar(top); P.push({ it: top, w, x: cx, y: yTop, z: 3 }); waist = yTop + h * (top.waist || .86); }
+  // parte de abajo: desde la cintura (pantalón largo llega a los zapatos, short a las rodillas)
+  if (bot) { const w = (bot.w || .64) * L.topW, h = w * ar(bot); P.push({ it: bot, w, x: cx, y: waist - h * .06, z: 2 }); }
+  pieces = P.map(p => {
+    const d = document.createElement('div'); d.className = 'piece';
+    d.style.left = p.x + 'px'; d.style.top = p.y + 'px'; d.style.width = p.w + 'px'; d.style.zIndex = p.z;
+    d.innerHTML = `<img src="${base}productos/${p.it.img}">`; fit.appendChild(d);
+    // etiqueta de precio
+    const h = p.w * ar(p.it), side = p.it.side || (p.it.slot === 'bottom' ? 'left' : 'right');
+    const ty = p.y + h * (p.it.slot === 'shoes' ? .5 : .32);
+    const tg = document.createElement('div'); tg.className = 'tag ' + side;
+    tg.innerHTML = `<span class="dot"></span><span class="line" style="width:${60 * U}px"></span><div class="box"><div class="n">${p.it.name}</div><div class="p">${clp(p.it.price)}<span class="ok">✔</span></div></div>`;
+    tg.style.top = ty + 'px';
+    if (side === 'left') { tg.style.right = (W - (p.x - p.w * .34)) + 'px'; } else { tg.style.left = (p.x + p.w * .34) + 'px'; }
+    tg.style.transform = 'translateY(-50%)';
+    tags.appendChild(tg);
+    return { el: d, tag: tg, slot: p.it.slot };
+  });
+  current = k;
+}
+
+// ---------------------------------------------------------------------------
+// Línea de tiempo
+// ---------------------------------------------------------------------------
+const TL = C.timeline;      // { changes: [[t, outfit], ...], buyAt, payStep, toastAt, endAt, dur }
+const BUY = C.buyIndex;
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const clamp = x => Math.max(0, Math.min(1, x));
+
+window.setT = async (t) => {
+  await window.ready;
+  // outfit vigente y tiempo desde el último cambio
+  let k = TL.changes[0][1], since = t - TL.changes[0][0];
+  for (const [ts, i] of TL.changes) if (t >= ts) { k = i; since = t - ts; }
+  if (k !== current) buildOutfit(k);
+  // cursor del menú
+  const buying = t >= TL.buyAt;
+  rows.forEach((r, i) => r.classList.toggle('on', !buying && i === k));
+  $('#buyRow').classList.toggle('on', buying);
+  $('#buyPrice').textContent = clp(totals[k]);
+  $('#cnt').textContent = `${k + 1}/${C.outfits.length}`;
+  $('#desc').innerHTML = C.outfits[k].items.map(i => `• ${i.name}`).join('<br>');
+  // destello y "pop" al cambiar de outfit
+  $('#flash').style.opacity = (since < .12 ? .55 * (1 - since / .12) : 0);
+  const pop = 1 + .045 * (1 - ease(clamp(since / .22)));
+  const bob = Math.sin(t * 2 * Math.PI / 2.6) * 5 * U, sway = Math.sin(t * 2 * Math.PI / 3.9) * .35;
+  $('#fit').style.transform = `translateY(${bob}px) rotate(${sway}deg) scale(${pop})`;
+  pieces.forEach((p, j) => {
+    const a = clamp((since - .08 - j * .07) / .18);
+    p.tag.style.opacity = a;
+    p.tag.style.transform = `translateY(-50%) translateX(${(1 - ease(a)) * (p.tag.classList.contains('left') ? -30 : 30) * U}px) translateY(${bob}px)`;
+    p.tag.classList.toggle('paid', t >= TL.buyAt + .25 + j * TL.payStep);
+  });
+  // fondo con zoom lento (cámara)
+  $('#bg').style.transform = `scale(${1 + .05 * t / TL.dur}) translateX(${Math.sin(t / 3) * 6 * U}px)`;
+  // dinero y compra
+  const kpay = clamp((t - TL.buyAt - .25) / (pieces.length * TL.payStep + .3));
+  const money = C.money0 - totals[BUY] * (buying ? ease(kpay) : 0);
+  const mt = fmtMoney(money); $('#money').textContent = mt; $('#money').dataset.t = mt;
+  const pp = '-' + clp(totals[BUY]); $('#pop').textContent = pp; $('#pop').dataset.t = pp;
+  $('#pop').style.opacity = t < TL.buyAt + .25 ? 0 : (t < TL.endAt ? 1 : 0);
+  const ta = clamp((t - TL.toastAt) / .25) * (1 - clamp((t - TL.endAt + .2) / .2));
+  $('#toast').style.opacity = ta; $('#toast').style.transform = `translate(-50%, -50%) scale(${1.25 - .25 * ease(clamp((t - TL.toastAt) / .3))})`;
+  $('#toastB').textContent = `${C.outfits[BUY].name.toUpperCase()} · ${clp(totals[BUY])}`;
+  // tarjeta final
+  const e = clamp((t - TL.endAt) / .45);
+  $('#end').style.opacity = e;
+  $('#endTitle').style.transform = `scale(${1.2 - .2 * ease(e)})`;
+  $('#endFit').textContent = `${C.outfits[BUY].name.toUpperCase()} · ${clp(totals[BUY])}`;
+  return true;
+};
+</script>
+</body>
+</html>

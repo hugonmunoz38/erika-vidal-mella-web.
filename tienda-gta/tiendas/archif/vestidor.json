@@ -1,0 +1,192 @@
+{
+  "id": "archif",
+  "header": "BLACK FRIDAY",
+  "bg": "fondo_tienda.png",
+  "brand": {
+    "wordmark": "marca/archif_wordmark_blanco.png",
+    "blue": "#0b1cff",
+    "web": "ARCHIFSTUDIOS.COM",
+    "handle": "@ARCHIFSTUDIOS"
+  },
+  "money0": 9999900,
+  "buyIndex": 0,
+  "end": {
+    "title": "OUTFIT COMPRADO"
+  },
+  "outfits": [
+    {
+      "name": "Outfit Camcorder",
+      "items": [
+        {
+          "slot": "top",
+          "img": "hoodie_panasonic.png",
+          "name": "Double Hoodie Panasonic AG-DVX100A",
+          "price": 150000
+        },
+        {
+          "slot": "bottom",
+          "img": "denim_big_archif.png",
+          "name": "Big Archif Denim Negro",
+          "price": 190000,
+          "w": 0.62
+        },
+        {
+          "slot": "shoes",
+          "img": "boots_witch_hunter.png",
+          "name": "Boots Bombers Witch Hunter",
+          "price": 550000,
+          "w": 0.62
+        }
+      ]
+    },
+    {
+      "name": "Outfit Skulls",
+      "items": [
+        {
+          "slot": "top",
+          "img": "hoodie_skulls_gris.png",
+          "name": "Double Hoodie Skulls3 Face Gris",
+          "price": 175000
+        },
+        {
+          "slot": "bottom",
+          "img": "bermuda_dickies.png",
+          "name": "Bermuda Dickies Big Daddy",
+          "price": 120000,
+          "w": 0.68
+        },
+        {
+          "slot": "shoes",
+          "img": "knu_skool_archif.png",
+          "name": "Archif & Vans Knu Skool Custom",
+          "price": 190000,
+          "w": 0.58
+        }
+      ]
+    },
+    {
+      "name": "Outfit Buddha",
+      "items": [
+        {
+          "slot": "top",
+          "img": "crewneck_buddha.png",
+          "name": "Crewneck Black Buddha Turquoise",
+          "price": 150000,
+          "waist": 0.9
+        },
+        {
+          "slot": "bottom",
+          "img": "denim_big_archif.png",
+          "name": "Big Archif Denim Negro",
+          "price": 190000,
+          "w": 0.62
+        },
+        {
+          "slot": "shoes",
+          "img": "knu_skool_archif.png",
+          "name": "Archif & Vans Knu Skool Custom",
+          "price": 190000,
+          "w": 0.58
+        }
+      ]
+    },
+    {
+      "name": "Outfit NASA",
+      "items": [
+        {
+          "slot": "top",
+          "img": "bomber_nasa.png",
+          "name": "Alpha Bomber Jacket Apolo 11",
+          "price": 290000,
+          "w": 0.7,
+          "waist": 0.9
+        },
+        {
+          "slot": "bottom",
+          "img": "denim_big_archif.png",
+          "name": "Big Archif Denim Negro",
+          "price": 190000,
+          "w": 0.62
+        },
+        {
+          "slot": "shoes",
+          "img": "boots_witch_hunter.png",
+          "name": "Boots Bombers Witch Hunter",
+          "price": 550000,
+          "w": 0.62
+        }
+      ]
+    },
+    {
+      "name": "Outfit Tactical",
+      "items": [
+        {
+          "slot": "top",
+          "img": "crewneck_tactical.png",
+          "name": "Crewneck Tactical Bulletproof Vest",
+          "price": 150000,
+          "waist": 0.9
+        },
+        {
+          "slot": "bottom",
+          "img": "bermuda_dickies.png",
+          "name": "Bermuda Dickies Big Daddy",
+          "price": 120000,
+          "w": 0.68
+        },
+        {
+          "slot": "shoes",
+          "img": "knu_skool_archif.png",
+          "name": "Archif & Vans Knu Skool Custom",
+          "price": 190000,
+          "w": 0.58
+        }
+      ]
+    }
+  ],
+  "timeline": {
+    "changes": [
+      [
+        0,
+        0
+      ],
+      [
+        1.5,
+        1
+      ],
+      [
+        2.9,
+        2
+      ],
+      [
+        4.3,
+        3
+      ],
+      [
+        5.7,
+        4
+      ],
+      [
+        7.1,
+        3
+      ],
+      [
+        7.35,
+        2
+      ],
+      [
+        7.6,
+        1
+      ],
+      [
+        7.85,
+        0
+      ]
+    ],
+    "buyAt": 8.7,
+    "payStep": 0.3,
+    "toastAt": 9.9,
+    "endAt": 11.4,
+    "dur": 14.0
+  }
+}
