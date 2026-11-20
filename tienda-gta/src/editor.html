@@ -145,7 +145,8 @@ let shown = null;
 window.setT = async (t) => {
   await window.ready;
   const TL = C.timeline;
-  const k = Math.min(N - 1, Math.floor(t / TL.step));          // fila seleccionada
+  const hold = TL.hold || 0;                                      // pausa inicial en la primera fila
+  const k = Math.min(N - 1, Math.floor(Math.max(0, t - hold) / TL.step));   // fila seleccionada
   const sk = C.rows[k].state ? k : k - 1;                         // foto vigente
   const state = C.rows[sk].state;
   if (state !== shown) { $('#photo').src = base + state; $('#photoBg').src = base + state; shown = state; }
@@ -162,7 +163,7 @@ window.setT = async (t) => {
   const z = 1 + .02 * t / TL.dur + .0045 * Math.sin(t * 2 * Math.PI / 2.8);
   $('#photo').style.transform = `scale(${z})`;
   // compra
-  const buyT = finalIdx * TL.step, payT = buyT + .45;
+  const buyT = hold + finalIdx * TL.step, payT = buyT + .45;
   const kp = clamp((t - payT) / .9);
   const hudA = clamp((t - buyT - .2) / .25) * (1 - clamp((t - TL.endAt + .2) / .2));
   $('#hud').style.opacity = hudA;

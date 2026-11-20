@@ -1,0 +1,112 @@
+{
+  "id": "archif",
+  "header": "BLACK FRIDAY",
+  "brand": {
+    "wordmark": "marca/archif_wordmark_blanco.png",
+    "blue": "#0b1cff",
+    "web": "ARCHIFSTUDIOS.COM",
+    "handle": "@ARCHIFSTUDIOS"
+  },
+  "photoSize": [
+    768,
+    1376
+  ],
+  "money0": 9999900,
+  "end": {
+    "title": "OUTFIT COMPRADO"
+  },
+  "finalName": "Outfit NASA",
+  "start": {
+    "top": "panasonic",
+    "bottom": "denim",
+    "shoes": "boots"
+  },
+  "rows": [
+    {
+      "name": "Double Hoodie Panasonic",
+      "price": 150000,
+      "key": "panasonic",
+      "slot": "top",
+      "state": "personaje/estados_gta6/s1.jpg",
+      "desc": "Double hoodie negro, estampado cámara Panasonic AG-DVX100A."
+    },
+    {
+      "name": "Double Hoodie Skulls3 Gris",
+      "price": 175000,
+      "key": "skulls",
+      "slot": "top",
+      "state": "personaje/estados_gta6/s2.jpg",
+      "desc": "Double hoodie gris con tres caras cromadas."
+    },
+    {
+      "name": "Archif & Vans Knu Skool",
+      "price": 190000,
+      "key": "knu",
+      "slot": "shoes",
+      "state": "personaje/estados_gta6/s3.jpg",
+      "desc": "Knu Skool custom Archif con escocés azul."
+    },
+    {
+      "name": "Bermuda Dickies Big Daddy",
+      "price": 120000,
+      "key": "bermuda",
+      "slot": "bottom",
+      "state": "personaje/estados_gta6/s4.jpg",
+      "desc": "Bermuda vintage de denim Dickies."
+    },
+    {
+      "name": "Crewneck Tactical Vest",
+      "price": 150000,
+      "key": "tactical",
+      "slot": "top",
+      "state": "personaje/estados_gta6/s5.jpg",
+      "desc": "Crewneck gris con chaleco táctico estampado."
+    },
+    {
+      "name": "Big Archif Denim Negro",
+      "price": 190000,
+      "key": "denim",
+      "slot": "bottom",
+      "state": "personaje/estados_gta6/s6.jpg",
+      "desc": "Denim negro corte recto Big Archif."
+    },
+    {
+      "name": "Crewneck Black Buddha",
+      "price": 150000,
+      "key": "buddha",
+      "slot": "top",
+      "state": "personaje/estados_gta6/s7.jpg",
+      "desc": "Crewneck negro con Buddha turquesa."
+    },
+    {
+      "name": "Alpha Bomber Apolo 11",
+      "price": 290000,
+      "key": "bomber",
+      "slot": "top",
+      "state": "personaje/estados_gta6/s8.jpg",
+      "desc": "Bomber Alpha NASA black out, forro rojo."
+    },
+    {
+      "name": "Boots Witch Hunter",
+      "price": 550000,
+      "key": "boots",
+      "slot": "shoes",
+      "state": "personaje/estados_gta6/s9.jpg",
+      "desc": "Botas Bombers Witch Hunter en cuero."
+    },
+    {
+      "name": "Comprar outfit completo",
+      "buy": true,
+      "desc": "Bomber + Denim + Boots"
+    }
+  ],
+  "timeline": {
+    "step": 0.95,
+    "hold": 2.0,
+    "toastAt": 11.85,
+    "endAt": 13.7,
+    "dur": 16.0
+  },
+  "uiOnly": true,
+  "transparent": true
+}
