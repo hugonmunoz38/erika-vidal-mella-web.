@@ -1,0 +1,11 @@
+[
+  {"out": "s1.jpg", "copy": "1_camcorder.jpg"},
+  {"out": "s2.jpg", "top": "2_skulls.jpg",   "low": "1_camcorder.jpg"},
+  {"out": "s3.jpg", "top": "2_skulls.jpg",   "low": "3_buddha.jpg"},
+  {"out": "s4.jpg", "copy": "2_skulls.jpg"},
+  {"out": "s5.jpg", "copy": "5_tactical.jpg"},
+  {"out": "s6.jpg", "top": "5_tactical.jpg", "low": "3_buddha.jpg"},
+  {"out": "s7.jpg", "copy": "3_buddha.jpg"},
+  {"out": "s8.jpg", "top": "4_nasa.jpg",     "low": "3_buddha.jpg", "kind": 641},
+  {"out": "s9.jpg", "copy": "4_nasa.jpg"}
+]
