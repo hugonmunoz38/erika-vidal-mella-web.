@@ -16,7 +16,7 @@ const fs = require('fs'), path = require('path');
   const times = onlyT ? onlyT.split(',').map(Number) : Array.from({ length: Math.round(cfg.timeline.dur * fps) }, (_, k) => k / fps);
   for (let k = 0; k < times.length; k++) {
     await page.evaluate(t => window.setT(t), times[k]);
-    await page.locator('#stage').screenshot({ path: path.join(outDir, `v_${String(k).padStart(4, '0')}.png`) });
+    await page.locator('#stage').screenshot({ path: path.join(outDir, `v_${String(k).padStart(4, '0')}.png`), omitBackground: !!cfg.transparent });
     if ((k + 1) % 60 === 0) console.log(`${k + 1}/${times.length}`);
   }
   await browser.close();

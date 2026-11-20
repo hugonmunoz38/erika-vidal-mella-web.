@@ -1,0 +1,8 @@
+{
+  "transparent": true,
+  "dur": 6.04,
+  "timeline": { "dur": 6.04 },
+  "title": { "kicker": "BLACK FRIDAY", "main": "ARCHIF STUDIOS", "sub": "Nueva misión: renueva tu outfit" },
+  "help": "Presiona <b>E</b> para entrar a <em>ARCHIF STUDIOS</em>",
+  "titleIn": 0.3, "titleOut": 2.9, "helpIn": 3.4
+}

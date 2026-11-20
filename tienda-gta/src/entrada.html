@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Entrada GTA 6</title>
+<style>
+  @font-face { font-family: 'Anton'; src: url('../assets/fonts/anton.woff2') format('woff2'); }
+  @font-face { font-family: 'Oswald'; font-weight: 600; src: url('../assets/fonts/oswald600.woff2') format('woff2'); }
+  :root { --u: 1px; --pink: #ff5fa8; --orange: #ffad4a; --teal: #3ff2e0; }
+  html, body { margin: 0; background: transparent; }
+  #stage { position: relative; overflow: hidden; background: transparent; font-family: 'Inter', sans-serif; color: #fff; }
+  .abs { position: absolute; }
+
+  /* minimapa moderno: cuadrado redondeado */
+  #map { border-radius: calc(26 * var(--u)); overflow: hidden; background: rgba(12, 14, 30, .62);
+         box-shadow: 0 0 0 calc(3 * var(--u)) rgba(255,255,255,.18), 0 calc(8 * var(--u)) calc(24 * var(--u)) rgba(0,0,0,.45); }
+  #map svg { width: 100%; height: 100%; display: block; }
+  #bars { display: flex; gap: calc(8 * var(--u)); }
+  #bars div { height: calc(8 * var(--u)); border-radius: 99px; background: rgba(255,255,255,.18); overflow: hidden; }
+  #bars i { display: block; height: 100%; border-radius: 99px; }
+
+  /* dinero y estrellas (arriba a la derecha) */
+  #hud { text-align: right; }
+  #cash { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(54 * var(--u)); letter-spacing: calc(1 * var(--u));
+          background: linear-gradient(180deg, #ffffff, #c9ffe8); -webkit-background-clip: text; background-clip: text; color: transparent;
+          filter: drop-shadow(0 0 calc(10 * var(--u)) rgba(63,242,224,.55)) drop-shadow(0 calc(2 * var(--u)) calc(3 * var(--u)) rgba(0,0,0,.6)); }
+  #stars { margin-top: calc(4 * var(--u)); font-size: calc(30 * var(--u)); letter-spacing: calc(4 * var(--u)); color: rgba(255,255,255,.35);
+           text-shadow: 0 calc(2 * var(--u)) calc(3 * var(--u)) rgba(0,0,0,.6); }
+
+  /* título de misión */
+  #title { left: 0; right: 0; text-align: center; opacity: 0; }
+  #title .k { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: calc(30 * var(--u)); letter-spacing: calc(12 * var(--u)); padding-left: calc(12 * var(--u));
+              background: linear-gradient(90deg, var(--pink), var(--orange)); -webkit-background-clip: text; background-clip: text; color: transparent;
+              filter: drop-shadow(0 calc(2 * var(--u)) calc(4 * var(--u)) rgba(0,0,0,.7)); }
+  #title h1 { margin: calc(4 * var(--u)) 0 0; font-family: 'Anton', sans-serif; font-weight: 400; font-style: italic; font-size: calc(118 * var(--u)); line-height: 1;
+              letter-spacing: calc(2 * var(--u)); transform: skewX(-6deg);
+              background: linear-gradient(100deg, #ffd1e8 0%, var(--pink) 30%, #ff7d6b 60%, var(--orange) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+              filter: drop-shadow(0 0 calc(18 * var(--u)) rgba(255,95,168,.55)) drop-shadow(0 calc(4 * var(--u)) calc(6 * var(--u)) rgba(0,0,0,.65)); }
+  #title .s { margin-top: calc(10 * var(--u)); font-weight: 600; font-size: calc(30 * var(--u)); letter-spacing: calc(1 * var(--u)); text-shadow: 0 calc(2 * var(--u)) calc(6 * var(--u)) rgba(0,0,0,.8); }
+  #title .line { width: calc(360 * var(--u)); height: calc(3 * var(--u)); margin: calc(14 * var(--u)) auto 0; background: linear-gradient(90deg, transparent, var(--pink), var(--orange), transparent); }
+
+  /* ayuda "presiona E" (arriba a la izquierda, como en GTA) */
+  #help { opacity: 0; max-width: calc(560 * var(--u)); background: rgba(0,0,0,.72); border-radius: calc(6 * var(--u)); padding: calc(16 * var(--u)) calc(20 * var(--u));
+          font-size: calc(28 * var(--u)); line-height: 1.35; font-weight: 500; box-shadow: 0 calc(6 * var(--u)) calc(18 * var(--u)) rgba(0,0,0,.4); }
+  #help b { display: inline-flex; align-items: center; justify-content: center; min-width: calc(36 * var(--u)); height: calc(36 * var(--u)); background: #fff; color: #111;
+            border-radius: calc(6 * var(--u)); font-size: calc(22 * var(--u)); margin: 0 calc(4 * var(--u)); vertical-align: middle; }
+  #help em { font-style: normal; color: var(--orange); font-weight: 700; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="map" class="abs"><svg viewBox="0 0 200 200" id="mapsvg"></svg></div>
+  <div id="bars" class="abs"><div style="flex:3"><i style="width:92%;background:linear-gradient(90deg,#39d98a,#7dffb3)"></i></div><div style="flex:2"><i style="width:70%;background:linear-gradient(90deg,#3b9bff,#8fd0ff)"></i></div></div>
+  <div id="hud" class="abs"><div id="cash">$9.999.900</div><div id="stars">★★★★★</div></div>
+  <div id="title" class="abs"><div class="k" id="tk"></div><h1 id="th"></h1><div class="line"></div><div class="s" id="ts"></div></div>
+  <div id="help" class="abs"></div>
+</div>
+<script>
+const C = window.CFG;
+const FMT = new URLSearchParams(location.search).get('fmt') || '9x16';
+const W = 1080, H = FMT === '9x16' ? 1920 : 1350, U = W / 1080;
+document.documentElement.style.setProperty('--u', U + 'px');
+const $ = s => document.querySelector(s);
+const stage = $('#stage'); stage.style.width = W + 'px'; stage.style.height = H + 'px';
+const clamp = x => Math.max(0, Math.min(1, x));
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const L = FMT === '9x16'
+  ? { map: [40, 1500, 270], hud: [40, 150], titleY: 1180, help: [40, 160] }
+  : { map: [30, 1060, 220], hud: [30, 30], titleY: 760, help: [30, 30] };
+const map = $('#map'); Object.assign(map.style, { left: L.map[0] + 'px', top: L.map[1] + 'px', width: L.map[2] + 'px', height: L.map[2] + 'px' });
+const bars = $('#bars'); Object.assign(bars.style, { left: L.map[0] + 'px', top: (L.map[1] + L.map[2] + 12 * U) + 'px', width: L.map[2] + 'px' });
+Object.assign($('#hud').style, { right: L.hud[0] + 'px', top: L.hud[1] + 'px' });
+$('#title').style.top = L.titleY + 'px';
+Object.assign($('#help').style, { left: L.help[0] + 'px', top: L.help[1] + 'px' });
+$('#tk').textContent = C.title.kicker; $('#th').textContent = C.title.main; $('#ts').textContent = C.title.sub;
+$('#help').innerHTML = C.help;
+// minimapa: calles neón que se desplazan hacia abajo mientras el personaje camina
+const svg = $('#mapsvg');
+svg.innerHTML = `
+  <defs><linearGradient id="road" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa8"/><stop offset="1" stop-color="#ffad4a"/></linearGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#3ff2e0" stop-opacity=".9"/><stop offset="1" stop-color="#3ff2e0" stop-opacity="0"/></radialGradient></defs>
+  <g id="world">
+    <rect x="-200" y="-400" width="600" height="900" fill="#141a33"/>
+    <path d="M-200 60 L400 -10" stroke="#2a3463" stroke-width="22"/><path d="M-200 260 L400 190" stroke="#2a3463" stroke-width="18"/>
+    <path d="M70 -400 L130 500" stroke="#2a3463" stroke-width="16"/>
+    <path d="M100 -400 L100 500" stroke="url(#road)" stroke-width="7" opacity=".95"/>
+    <path d="M-200 120 L400 120" stroke="#ff5fa8" stroke-width="4" opacity=".55"/>
+    <g fill="#1f2950"><rect x="10" y="-60" width="60" height="50" rx="6"/><rect x="130" y="-120" width="50" height="70" rx="6"/><rect x="20" y="150" width="55" height="60" rx="6"/><rect x="135" y="160" width="50" height="50" rx="6"/></g>
+    <g id="dest" transform="translate(100 -30)"><circle r="26" fill="url(#glow)"/><circle r="15" fill="#0b1cff" stroke="#fff" stroke-width="3"/>
+      <path d="M0 -8 l2 3 4-1 0 4 3 2-2 3 2 3-3 2 0 4-4-1-2 3-2-3-4 1 0-4-3-2 2-3-2-3 3-2 0-4 4 1z" fill="#fff"/></g>
+  </g>
+  <path d="M100 118 L110 142 L100 136 L90 142 Z" fill="#fff" stroke="#000" stroke-width="2"/>`;
+
+window.ready = document.fonts.ready;
+window.setT = async (t) => {
+  await window.ready;
+  const D = C.dur;
+  // el mundo del minimapa avanza: la tienda se acerca al jugador
+  const p = clamp(t / D);
+  $('#world').setAttribute('transform', `translate(0 ${p * 120})`);
+  $('#dest').querySelector('circle').setAttribute('r', 22 + 6 * Math.sin(t * 6));
+  // título de misión
+  const ti = clamp((t - C.titleIn) / .5) * (1 - clamp((t - C.titleOut) / .5));
+  const tt = $('#title'); tt.style.opacity = ti; tt.style.transform = `translateY(${(1 - ease(clamp((t - C.titleIn) / .6))) * 30 * U}px)`;
+  // ayuda
+  const h = clamp((t - C.helpIn) / .3) * (1 - clamp((t - D + .35) / .3));
+  $('#help').style.opacity = h;
+  // HUD se desvanece al entrar
+  const fade = 1 - clamp((t - D + .35) / .3);
+  ['#map', '#bars', '#hud'].forEach(q => $(q).style.opacity = fade);
+  return true;
+};
+</script>
+</body>
+</html>
